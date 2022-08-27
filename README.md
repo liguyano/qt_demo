@@ -8,7 +8,8 @@ This project is build for the local net text and **binary** *file* transport.
 ## about this version 1.0
 
 this version is already implement the text send and ***file convert***. But the
-*last part* of the scent file can't be received. Reason unknown.
+*last part* of the scent file can't be received. Reason unknown.  
+This project is powered by QT.
 > System.out.println("hello world");
 
 * 111

@@ -6,7 +6,10 @@
 #include "ui_setting.h"
 #include "setting.h"
 
-setting::setting(QWidget *parents) : QDialog(parents), ui(new Ui::Dialog) {
-
+setting::setting(QWidget *parents) : QDialog(parents), ui(new Ui::Setting) {
     ui->setupUi(this);
+}
+
+setting::~setting() {
+
 }

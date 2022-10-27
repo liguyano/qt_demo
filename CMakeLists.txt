@@ -19,6 +19,15 @@ find_package(Qt5 COMPONENTS
 QT5_WRAP_UI(project_FORMS_HEADERS setting.ui)
 QT5_ADD_RESOURCES(project_RESOURCE_CPPS setting.qrc)
 
+set(public_include ${CMAKE_CURRENT_SOURCE_DIR}/cmake-build-debug/qt_Demo_autogen/include/)
+# 拷贝 main.cpp 到 public_include 中
+execute_process(COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/cmake-build-release/ui_setting.h ${public_include})
+message("copy succed")
+set(public_include ${CMAKE_CURRENT_SOURCE_DIR}/cmake-build-release/qt_Demo_autogen/include/)
+# 拷贝 main.cpp 到 public_include 中
+execute_process(COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/cmake-build-release/ui_setting.h ${public_include})
+message("copy succed")
+
 add_executable(qt_Demo main.cpp mainwindow.cpp Q_person.cpp Q_person.h tcpListening.cpp tcpListening.h tcpSock.cpp
         tcpSock.h tcpReceiver.cpp tcpReceiver.h userInfo.cpp userInfo.h setting.cpp setting.h
         ${project_FORMS_HEADERS}

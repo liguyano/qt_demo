@@ -10,15 +10,18 @@
 
 QT_BEGIN_NAMESPACE
 
-namespace Ui { class Dialog; }
+namespace Ui { class Setting; }
 QT_END_NAMESPACE
 class setting : public QDialog {
 Q_OBJECT
 public:
     explicit setting(QWidget *parents = nullptr);
 
+    ~setting();
+
 private:
-    Ui::Dialog *ui;
+    Ui::Setting *ui;
+    QString name = "unknuupp";
 };
 
 

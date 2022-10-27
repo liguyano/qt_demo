@@ -4,9 +4,12 @@
 
 #ifndef QT_DEMO_USERINFO_H
 #define QT_DEMO_USERINFO_H
+#include "publicInclude.h"
 
+class userInfo : QObject {
+Q_OBJECT
 
-class userInfo {
+    userInfo();
 
 };
 

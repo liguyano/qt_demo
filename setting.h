@@ -9,9 +9,8 @@
 #include <QDialog>
 
 QT_BEGIN_NAMESPACE
-namespace UI {
-    class setting;
-}
+
+namespace Ui { class Dialog; }
 QT_END_NAMESPACE
 class setting : public QDialog {
 Q_OBJECT
@@ -19,7 +18,7 @@ public:
     explicit setting(QWidget *parents = nullptr);
 
 private:
-    UI::setting *ui;
+    Ui::Dialog *ui;
 };
 
 

@@ -5,6 +5,7 @@
 #include "userInfo.h"
 
 userInfo::userInfo() {
+    auto a = 0;
 
 
 }

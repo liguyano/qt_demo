@@ -16,7 +16,7 @@ find_package(Qt5 COMPONENTS
         REQUIRED
         )
 
-add_executable(qt_Demo main.cpp mainwindow.cpp Q_person.cpp Q_person.h tcpListening.cpp tcpListening.h tcpSock.cpp tcpSock.h tcpReceiver.cpp tcpReceiver.h)
+add_executable(qt_Demo main.cpp mainwindow.cpp Q_person.cpp Q_person.h tcpListening.cpp tcpListening.h tcpSock.cpp tcpSock.h tcpReceiver.cpp tcpReceiver.h userInfo.cpp userInfo.h)
 add_executable(test modelTest.cpp tcpSock.cpp tcpSock.h tcpReceiver.cpp tcpReceiver.h)
 
 target_link_libraries(test

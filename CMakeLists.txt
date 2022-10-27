@@ -8,6 +8,7 @@ set(CMAKE_AUTOUIC ON)
 set(Qt5_DIR D:\\QT5\\5.12.9\\msvc2017_64\\lib\\cmake\\Qt5)
 #set(Qt5_DIR D:\\QT5\\5.12.9\\mingw73_64\\lib\\cmake\\Qt5)
 
+
 find_package(Qt5 COMPONENTS
         Core
         Gui
@@ -15,8 +16,13 @@ find_package(Qt5 COMPONENTS
         Network
         REQUIRED
         )
+QT5_WRAP_UI(project_FORMS_HEADERS setting.ui)
+QT5_ADD_RESOURCES(project_RESOURCE_CPPS setting.qrc)
 
-add_executable(qt_Demo main.cpp mainwindow.cpp Q_person.cpp Q_person.h tcpListening.cpp tcpListening.h tcpSock.cpp tcpSock.h tcpReceiver.cpp tcpReceiver.h userInfo.cpp userInfo.h)
+add_executable(qt_Demo main.cpp mainwindow.cpp Q_person.cpp Q_person.h tcpListening.cpp tcpListening.h tcpSock.cpp
+        tcpSock.h tcpReceiver.cpp tcpReceiver.h userInfo.cpp userInfo.h setting.cpp setting.h
+        ${project_FORMS_HEADERS}
+        )
 add_executable(test modelTest.cpp tcpSock.cpp tcpSock.h tcpReceiver.cpp tcpReceiver.h)
 
 target_link_libraries(test

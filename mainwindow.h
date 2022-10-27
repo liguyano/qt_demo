@@ -8,6 +8,7 @@
 #include <QDir>
 #include <thread>
 #include "tcpReceiver.h"
+#include "setting.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }

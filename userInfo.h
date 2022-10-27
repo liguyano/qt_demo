@@ -6,7 +6,7 @@
 #define QT_DEMO_USERINFO_H
 #include "publicInclude.h"
 
-class userInfo : QObject {
+class userInfo : public QObject {
 Q_OBJECT
 
     userInfo();

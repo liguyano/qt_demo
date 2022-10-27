@@ -6,6 +6,9 @@ MainWindow::MainWindow(QWidget *parent)
         : QMainWindow(parent), ui(new Ui::MainWindow) {
     QString imghtml = "<img filename= \"a.png\" src=\"a.png\" width=\"001\" height=\"28\" alt=\"404\"  />";
     changImgWidth(imghtml, 1);
+    auto dia = new setting(this);
+    dia->exec();
+    delete dia;
     qInfo() << imghtml;
     ui->setupUi(this);
     //  ui->textBrowser->setAlignment(Qt::AlignLeft);

@@ -16,9 +16,14 @@ public:
 
     bool lood(QString path);
 
+    bool change_self_info(QString what, QString towhat);
+
     userInfo();
 
+    ~userInfo();
+
 private:
+    TiXmlDocument data;
     QString settingPath;
 
 };

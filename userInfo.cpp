@@ -3,6 +3,7 @@
 //
 
 #include "userInfo.h"
+#define C_STR(A) A.toStdString().c_str()
 
 userInfo::userInfo() {
     auto a = 0;
@@ -10,15 +11,13 @@ userInfo::userInfo() {
 }
 
 bool userInfo::lood(QString path) {
-    TiXmlDocument data;
     data.LoadFile(path.toStdString().c_str());
-
 
     return false;
 }
 
 bool userInfo::creatInitFile() {
-    QFile setData("setting/option.xml");
+    QFile setData("./setting/option.xml");
     if (setData.exists()) {
 
     } else {
@@ -57,4 +56,26 @@ bool userInfo::creatInitFile() {
     }
 
     return false;
+}
+
+bool userInfo::change_self_info(QString what, QString value) {
+    auto command = what.split(".");
+    auto first = data.FirstChild(command[0].toStdString().c_str());
+    if (command[0] == "user") {
+        auto scend = first->FirstChild(C_STR(command[1]));
+        if (command.length() > 2) {
+            auto addr = scend->FirstChild(C_STR(command[2]));
+            addr->SetValue(C_STR(value));
+            addr->Clear();
+        } else {
+            scend->SetValue(C_STR(value));
+        }
+
+    }
+    return false;
+}
+
+userInfo::~userInfo() {
+    data.SaveFile();
+    data.Clear();
 }

@@ -57,20 +57,26 @@ bool userInfo::creatInitFile() {
 
     return false;
 }
-
+// frindes.frined[name=haha].a
 bool userInfo::change_self_info(QString what, QString value) {
     auto command = what.split(".");
-    auto first = data.FirstChild(command[0].toStdString().c_str());
-    if (command[0] == "user") {
-        auto scend = first->FirstChild(C_STR(command[1]));
-        if (command.length() > 2) {
-            auto addr = scend->FirstChild(C_STR(command[2]));
-            addr->SetValue(C_STR(value));
-            addr->Clear();
-        } else {
-            scend->SetValue(C_STR(value));
+    auto a = data.RootElement();
+    auto d = a;
+    for (int i = 0; i < command.length(); ++i) {
+        d = a;
+        a = a->FirstChildElement(C_STR(command[i]));
+        if (a == NULL) {
+            auto c = new TiXmlElement(C_STR(command[i]));
+            d->LinkEndChild(c);
+            a = d->FirstChildElement(C_STR(command[i]));
         }
-
+    }
+    auto b = a->FirstChild();
+    if (b == NULL) {
+        a->LinkEndChild(new TiXmlText(C_STR(value)));
+    } else {
+        qInfo() << b->Value();
+        b->SetValue(C_STR(value));
     }
     return false;
 }

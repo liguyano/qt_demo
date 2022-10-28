@@ -9,6 +9,8 @@
 setting::setting(QWidget *parents) : QDialog(parents),
                                      ui(new Ui::Setting), UserInfo(new userInfo) {
     ui->setupUi(this);
+    UserInfo->lood("./setting/option.xml");
+    UserInfo->change_self_info("user.name", "aaa");
 
 }
 

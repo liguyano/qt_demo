@@ -70,6 +70,7 @@ public slots:
 private:
     Ui::MainWindow *ui;
     Q_person *person;
+    void dirExit(QString path);
 };
 
 #endif // MAINWINDOW_H

@@ -4,6 +4,7 @@
 
 MainWindow::MainWindow(QWidget *parent)
         : QMainWindow(parent), ui(new Ui::MainWindow) {
+    this->dirExit("./setting/");
     QString imghtml = "<img filename= \"a.png\" src=\"a.png\" width=\"001\" height=\"28\" alt=\"404\"  />";
     changImgWidth(imghtml, 1);
     auto dia = new setting(this);
@@ -317,6 +318,16 @@ void MainWindow::changImgWidth(QString &origin, qint32 width) {
     auto i = origin.lastIndexOf("width=");
     origin.replace(i + 7, 3, QString("%1").arg(width, 3, 10, QLatin1Char('0')));
     //  qInfo()<<origin;
+}
+
+void MainWindow::dirExit(QString path) {
+    QDir dir(path);
+    if (dir.exists()) {
+
+    } else {
+        qDebug() << dir.mkdir("." + path);
+    }
+
 }
 
 

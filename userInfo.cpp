@@ -9,3 +9,16 @@ userInfo::userInfo() {
 
 
 }
+
+bool userInfo::lood(QString path) {
+    TiXmlDocument data;
+    data.LoadFile(path.toStdString().c_str());
+
+
+    return false;
+}
+
+bool userInfo::creatInitFile() {
+
+    return false;
+}

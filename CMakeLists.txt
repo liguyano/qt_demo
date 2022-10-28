@@ -15,7 +15,10 @@ find_package(Qt5 COMPONENTS
         Widgets
         Network
         REQUIRED
+
         )
+set(LINK_DIR ./lib)
+link_directories(${LINK_DIR})
 QT5_WRAP_UI(project_FORMS_HEADERS setting.ui)
 QT5_ADD_RESOURCES(project_RESOURCE_CPPS setting.qrc)
 
@@ -33,17 +36,20 @@ add_executable(qt_Demo main.cpp mainwindow.cpp Q_person.cpp Q_person.h tcpListen
         ${project_FORMS_HEADERS}
         )
 add_executable(test modelTest.cpp tcpSock.cpp tcpSock.h tcpReceiver.cpp tcpReceiver.h)
+add_library(xml tinyxml/tinyxml.cpp tinyxml/tinystr.cpp tinyxml/tinyxmlerror.cpp tinyxml/tinyxmlparser.cpp)
 
 target_link_libraries(test
         Qt5::Core
         Qt5::Gui
         Qt5::Widgets
         Qt5::Network
+
         )
 target_link_libraries(qt_Demo
         Qt5::Core
         Qt5::Gui
         Qt5::Widgets
         Qt5::Network
+        xml
         )
 

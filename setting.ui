@@ -29,33 +29,46 @@
                 <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
             </property>
         </widget>
-        <widget class="QSplitter" name="splitter">
+        <widget class="QWidget" name="">
             <property name="geometry">
                 <rect>
-                    <x>30</x>
+                    <x>20</x>
                     <y>20</y>
-                    <width>207</width>
-                    <height>24</height>
+                    <width>209</width>
+                    <height>48</height>
                 </rect>
             </property>
-            <property name="orientation">
-                <enum>Qt::Horizontal</enum>
-            </property>
-            <widget class="QLabel" name="label">
-                <property name="font">
-                    <font>
-                        <pointsize>11</pointsize>
-                    </font>
-                </property>
-                <property name="text">
-                    <string>name</string>
-                </property>
-            </widget>
-            <widget class="QLineEdit" name="lineEdit">
-                <property name="text">
-                    <string>unknow</string>
-                </property>
-            </widget>
+            <layout class="QVBoxLayout" name="verticalLayout">
+                <item>
+                    <widget class="QSplitter" name="splitter">
+                        <property name="orientation">
+                            <enum>Qt::Horizontal</enum>
+                        </property>
+                        <widget class="QLabel" name="label">
+                            <property name="font">
+                                <font>
+                                    <pointsize>11</pointsize>
+                                </font>
+                            </property>
+                            <property name="text">
+                                <string>name</string>
+                            </property>
+                        </widget>
+                        <widget class="QLineEdit" name="lineEdit">
+                            <property name="text">
+                                <string>unknow</string>
+                            </property>
+                        </widget>
+                    </widget>
+                </item>
+                <item>
+                    <widget class="QLabel" name="label_2">
+                        <property name="text">
+                            <string>none</string>
+                        </property>
+                    </widget>
+                </item>
+            </layout>
         </widget>
     </widget>
     <resources/>

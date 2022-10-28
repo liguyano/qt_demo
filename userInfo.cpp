@@ -88,7 +88,7 @@ bool userInfo::change_self_info(QString what, QString value) {
             }
         } else {
             a = a->FirstChildElement(C_STR(command[i]));
-        }
+        }// deal when contains attribte
 
         if (a == NULL) {
             auto c = new TiXmlElement(C_STR(command[i]));
@@ -118,7 +118,30 @@ QString userInfo::read_info(QString what) {
     auto d = a;
     for (int i = 0; i < command.length(); ++i) {
         d = a;
-        a = a->FirstChildElement(C_STR(command[i]));
+        if (command[i].count("[") > 0) {
+            auto aComm = command[i].mid(command[i].indexOf("[") + 1,
+                                        command[i].indexOf("]") - command[i].indexOf("[") - 1);
+            qInfo() << aComm;
+            command[i] = command[i].remove(command[i].indexOf("["), command[i].indexOf("]"));
+            //qInfo()<<"comi:   "<<command[i];
+            auto va = aComm.split("=")[1];
+            auto Comm = aComm.split("=")[0];
+            qInfo() << va << "  " << Comm;
+            a = a->FirstChildElement(C_STR(command[i]));
+
+            while (a != NULL && QString(a->Attribute(C_STR(Comm))) != va) {
+
+                a = a->NextSiblingElement();
+            }
+            if (a == NULL) {
+                auto c = new TiXmlElement(C_STR(command[i]));
+                c->SetAttribute(C_STR(Comm), C_STR(va));
+                d->LinkEndChild(c);
+                a = c;
+            }
+        } else {
+            a = a->FirstChildElement(C_STR(command[i]));
+        }
         if (a == NULL) {
             auto c = new TiXmlElement(C_STR(command[i]));
             d->LinkEndChild(c);

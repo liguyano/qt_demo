@@ -62,6 +62,60 @@ bool userInfo::change_self_info(QString what, QString value) {
     auto command = what.split(".");
     auto a = data.RootElement();
     auto d = a;
+    QStringList attr = {};
+    for (int i = 0; i < command.length(); ++i) {
+        d = a;
+        if (command[i].count("[") > 0) {
+            auto aComm = command[i].mid(command[i].indexOf("[") + 1,
+                                        command[i].indexOf("]") - command[i].indexOf("[") - 1);
+            qInfo() << aComm;
+            command[i] = command[i].remove(command[i].indexOf("["), command[i].indexOf("]"));
+            //qInfo()<<"comi:   "<<command[i];
+            auto va = aComm.split("=")[1];
+            auto Comm = aComm.split("=")[0];
+            qInfo() << va << "  " << Comm;
+            a = a->FirstChildElement(C_STR(command[i]));
+
+            while (a != NULL && QString(a->Attribute(C_STR(Comm))) != va) {
+
+                a = a->NextSiblingElement();
+            }
+            if (a == NULL) {
+                auto c = new TiXmlElement(C_STR(command[i]));
+                c->SetAttribute(C_STR(Comm), C_STR(va));
+                d->LinkEndChild(c);
+                a = c;
+            }
+        } else {
+            a = a->FirstChildElement(C_STR(command[i]));
+        }
+
+        if (a == NULL) {
+            auto c = new TiXmlElement(C_STR(command[i]));
+            d->LinkEndChild(c);
+            a = d->FirstChildElement(C_STR(command[i]));
+        }
+    }
+    auto b = a->FirstChild();
+
+    if (b == NULL || !b->NoChildren()) {
+        a->LinkEndChild(new TiXmlText(C_STR(value)));
+    } else {
+        qInfo() << b->Value();
+        b->SetValue(C_STR(value));
+    }
+    return 1;
+}
+
+userInfo::~userInfo() {
+    data.SaveFile();
+    data.Clear();
+}
+
+QString userInfo::read_info(QString what) {
+    auto command = what.split(".");
+    auto a = data.RootElement();
+    auto d = a;
     for (int i = 0; i < command.length(); ++i) {
         d = a;
         a = a->FirstChildElement(C_STR(command[i]));
@@ -72,16 +126,5 @@ bool userInfo::change_self_info(QString what, QString value) {
         }
     }
     auto b = a->FirstChild();
-    if (b == NULL) {
-        a->LinkEndChild(new TiXmlText(C_STR(value)));
-    } else {
-        qInfo() << b->Value();
-        b->SetValue(C_STR(value));
-    }
-    return false;
-}
-
-userInfo::~userInfo() {
-    data.SaveFile();
-    data.Clear();
+    return b->Value();
 }

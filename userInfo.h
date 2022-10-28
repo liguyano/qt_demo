@@ -18,6 +18,8 @@ public:
 
     bool change_self_info(QString what, QString towhat);
 
+    QString read_info(QString command);
+
     userInfo();
 
     ~userInfo();

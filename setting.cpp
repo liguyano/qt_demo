@@ -10,7 +10,8 @@ setting::setting(QWidget *parents) : QDialog(parents),
                                      ui(new Ui::Setting), UserInfo(new userInfo) {
     ui->setupUi(this);
     UserInfo->lood("./setting/option.xml");
-    UserInfo->change_self_info("user.name", "aaa");
+    UserInfo->change_self_info("friends.friend[name=dd].ipAddres", "002");
+    // qInfo()<<UserInfo->read_info("user.ipAddres.v6");
 
 }
 

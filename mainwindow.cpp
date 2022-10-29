@@ -13,6 +13,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     this->upGradeuserIfo();
     connect(ui->actionhow, SIGNAL(triggered(bool)), this, SLOT(openSetting(bool)));
+    connect(ui->actionself_info, SIGNAL(triggered(bool)), this, SLOT(open_self_info(bool)));
     //  ui->textBrowser->setAlignment(Qt::AlignLeft);
     auto btn = ui->centralwidget->findChild<QPushButton *>("unknow");
     connect(btn, SIGNAL(clicked(bool)), this, SLOT(btn_clicked()));
@@ -372,6 +373,16 @@ void MainWindow::add_nameAndip(QString name, QHostAddress add) {
     for (auto a: buttons) {
         a->setText(ip_name_map.value(a->property("ip").toString()));
     }
+}
+
+void MainWindow::open_self_info(bool a) {
+    userInfo uu;
+    uu.lood("./setting/option.xml");
+    // uu.read_multi_data("user.ipAddres.v4");
+    auto dia = new InfoDialog(uu.read_multi_data("user.ipAddres.v4"), this);
+    dia->exec();
+    delete dia;
+
 }
 
 

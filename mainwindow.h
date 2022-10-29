@@ -8,6 +8,7 @@
 #include <QDir>
 #include <thread>
 #include "tcpReceiver.h"
+#include "InfoDialog.h"
 #include "setting.h"
 
 QT_BEGIN_NAMESPACE
@@ -49,6 +50,9 @@ public:
     ~MainWindow();
 
 public slots:
+
+    void open_self_info(bool a);
+
     void openSetting(bool a);
 
     void btn_clicked();

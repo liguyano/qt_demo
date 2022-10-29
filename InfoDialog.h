@@ -5,6 +5,7 @@
 
 #include "publicInclude.h"
 #include <QDialog>
+#include "userInfo.h"
 #include <QStringListModel>
 
 QT_BEGIN_NAMESPACE

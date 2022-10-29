@@ -129,6 +129,8 @@ QList<QHostAddress> MainWindow::getAllip() {
     userInfo userfo;
     userfo.lood("./setting/option.xml");
     userfo.save_list(ssl, "user.ipAddres", "v4", 1);
+    auto aa = userfo.get_element("user");
+    qInfo() << aa->Attribute("name");
     return addList;
 }
 

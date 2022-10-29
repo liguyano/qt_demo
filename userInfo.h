@@ -20,6 +20,12 @@ public:
 
     QString read_info(QString command);
 
+    bool save_list(QStringList list, QString where, QString label, bool clear = 0);
+
+    bool add_element(QString where, QString what, QString label, QMap<QString, QString> attribute = {});
+
+    TiXmlElement *get_element(QString where);
+
     userInfo();
 
     ~userInfo();

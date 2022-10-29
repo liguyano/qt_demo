@@ -120,26 +120,14 @@ QList<QHostAddress> MainWindow::getAllip() {
         }
 
     }
-/*    for (const auto &s: all_ip) {
+    QStringList ssl = {};
+    for (const auto &s: all_ip) {
         qInfo() << s.toString() << endl;
-    }*/
+        ssl.append(s.toString());
+    }
     userInfo userfo;
     userfo.lood("./setting/option.xml");
-    auto d = userfo.getData();
-    auto user = d.RootElement()->FirstChildElement("user");
-    auto ipadd = user->FirstChild("ipAddres");
-    ipadd->Clear();
-    for (auto i: all_ip) {
-        auto ipa = new TiXmlElement("v4");
-        auto text = new TiXmlText(i.toString().toStdString().c_str());
-        ipa->LinkEndChild(text);
-        ipadd->LinkEndChild(ipa);
-        qDebug() << i;
-    }
-    qInfo() << ipadd->NoChildren();
-    d.SaveFile();
-    d.SaveFile("./setting/option.xml");
-
+    userfo.save_list(ssl, "user.ipAddres", "v4", 1);
     return addList;
 }
 

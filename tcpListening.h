@@ -45,6 +45,8 @@ signals:
 
     void test(int i);
 
+    void name_come(QString name, QHostAddress add);
+
 };
 
 #endif //QT_DEMO_TCPLISTENING_H

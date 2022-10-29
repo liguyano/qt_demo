@@ -70,6 +70,9 @@ void tcpListening::processData() {
             this->setProperty("times", ++a);
             emit test(a);
         }
+        if (message[0] == 'N') {
+            emit name_come(message.mid(1, -1), add);
+        }
 /*        if (message=="end")
         {
             emit file_end();

@@ -27,6 +27,8 @@ public:
     QList<QHostAddress> all_user;
     QList<QStringList> messages;
     QList<QPushButton *> buttons;
+    QMap<QString, QString> ip_name_map;
+    QMap<QString, QString> options;
 
     void changImgWidth(QString &origin, qint32 width);
 
@@ -68,6 +70,8 @@ public slots:
     void send_file();
 
     void recv_file(QString fileName, QHostAddress add, qint64 size);
+
+    void add_nameAndip(QString name, QHostAddress add);
 
 private:
     Ui::MainWindow *ui;

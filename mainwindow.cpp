@@ -56,6 +56,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->pushButton, SIGNAL(clicked(bool)), this, SLOT(send_file()));
     connect(tcp, SIGNAL(file_come(QString, QHostAddress, qint64)), this,
             SLOT(recv_file(QString, QHostAddress, qint64)));
+    connect(tcp, SIGNAL(name_come(QString, QHostAddress)), this, SLOT(add_nameAndip(QString, QHostAddress)));
 }
 
 MainWindow::~MainWindow() {
@@ -174,12 +175,16 @@ void MainWindow::regist_one(QHostAddress add) {
     tcp->getUdpSock()->writeDatagram("IM", add, 7001);
     auto btn = new QPushButton(this);
     btn->setProperty("id", all_user.size());
+    ip_name_map[add.toString()] = add.toString();
+    btn->setProperty("ip", add.toString());
     ui->users->addWidget(btn);
     btn->setText(add.toString());
     all_user.push_back(add);
 
     messages.push_back(mes);
     buttons.push_back(btn);
+    QString mess = "N" + options.value("name");
+    tcp->getUdpSock()->writeDatagram(mess.toStdString().c_str(), add, 7001);
     connect(btn, SIGNAL(clicked(bool)), this, SLOT(usr_ben_clicked()));
 }
 
@@ -345,7 +350,15 @@ void MainWindow::upGradeuserIfo() {
     userInfo user;
     user.lood("./setting/option.xml");
     ui->myName->setText(user.read_info("user.name"));
+    options["name"] = user.read_info("user.name");
+    QString mess = "N" + options.value("name");
+}
 
+void MainWindow::add_nameAndip(QString name, QHostAddress add) {
+    ip_name_map[add.toString()] = (name);
+    for (auto a: buttons) {
+        a->setText(ip_name_map.value(a->property("ip").toString()));
+    }
 }
 
 

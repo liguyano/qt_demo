@@ -230,3 +230,15 @@ TiXmlElement *userInfo::get_element(QString what) {
 
     return a;
 }
+
+QStringList userInfo::read_multi_data(QString what) {
+    QStringList result;
+    auto a = get_element(what);
+    while (a != NULL) {
+        auto b = a->FirstChildElement();
+        result.append(b->Value());
+        a = a->NextSiblingElement();
+    }
+    return result;
+
+}

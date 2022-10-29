@@ -23,4 +23,6 @@
 #include <QFileDialog>
 #include <QPainter>
 
+typedef QString qs;
+
 #endif //QT_DEMO_PUBLICINCLUDE_H

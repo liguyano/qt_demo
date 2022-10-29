@@ -32,6 +32,8 @@ public:
 
     const TiXmlDocument &getData() const;
 
+    QStringList read_multi_data(QString where);
+
 private:
     TiXmlDocument data;
     QString settingPath;

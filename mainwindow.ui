@@ -18,7 +18,7 @@
     <property name="geometry">
      <rect>
          <x>0</x>
-         <y>10</y>
+         <y>0</y>
          <width>761</width>
          <height>511</height>
      </rect>
@@ -107,22 +107,22 @@
        <height>81</height>
       </rect>
      </property>
-     <layout class="QVBoxLayout" name="verticalLayout">
-      <item>
-       <widget class="QPushButton" name="pushButton">
-        <property name="text">
-         <string>发送文件</string>
-        </property>
-       </widget>
-      </item>
-         <item>
-             <widget class="QPushButton" name="unknow">
-                 <property name="text">
-                     <string>發送(alt+s)</string>
-                 </property>
-             </widget>
-         </item>
-     </layout>
+        <layout class="QVBoxLayout" name="verticalLayout">
+            <item>
+                <widget class="QPushButton" name="pushButton">
+                    <property name="text">
+                        <string>发送文件</string>
+                    </property>
+                </widget>
+            </item>
+            <item>
+                <widget class="QPushButton" name="unknow">
+                    <property name="text">
+                        <string>發送(alt+s)</string>
+                    </property>
+                </widget>
+            </item>
+        </layout>
     </widget>
        <widget class="QLabel" name="label_3">
            <property name="geometry">
@@ -164,8 +164,6 @@
        <zorder>textBrowser</zorder>
        <zorder>lineEdit</zorder>
        <zorder>verticalLayoutWidget</zorder>
-       <zorder>myName</zorder>
-       <zorder>label_3</zorder>
        <zorder>label_3</zorder>
        <zorder>myName</zorder>
    </widget>
@@ -192,18 +190,24 @@
    </property>
    <widget class="QMenu" name="menuyu">
     <property name="title">
-     <string>設置</string>
+        <string>設置</string>
     </property>
-    <addaction name="actionhow"/>
+       <addaction name="actionhow"/>
+       <addaction name="actionself_info"/>
    </widget>
-   <addaction name="menuyu"/>
+      <addaction name="menuyu"/>
   </widget>
-  <widget class="QStatusBar" name="statusbar"/>
-  <action name="actionhow">
-   <property name="text">
-    <string>how</string>
-   </property>
-  </action>
+     <widget class="QStatusBar" name="statusbar"/>
+     <action name="actionhow">
+         <property name="text">
+             <string>name</string>
+         </property>
+     </action>
+     <action name="actionself_info">
+         <property name="text">
+             <string>self_info</string>
+         </property>
+     </action>
  </widget>
  <resources/>
  <connections/>

@@ -7,11 +7,12 @@ MainWindow::MainWindow(QWidget *parent)
     this->dirExit("./setting/");
     QString imghtml = "<img filename= \"a.png\" src=\"a.png\" width=\"001\" height=\"28\" alt=\"404\"  />";
     changImgWidth(imghtml, 1);
-    auto dia = new setting(this);
-    dia->exec();
-    delete dia;
+
     qInfo() << imghtml;
     ui->setupUi(this);
+
+    this->upGradeuserIfo();
+    connect(ui->actionhow, SIGNAL(triggered(bool)), this, SLOT(openSetting(bool)));
     //  ui->textBrowser->setAlignment(Qt::AlignLeft);
     auto btn = ui->centralwidget->findChild<QPushButton *>("unknow");
     connect(btn, SIGNAL(clicked(bool)), this, SLOT(btn_clicked()));
@@ -327,6 +328,23 @@ void MainWindow::dirExit(QString path) {
     } else {
         qDebug() << dir.mkdir("." + path);
     }
+
+}
+
+void MainWindow::openSetting(bool a) {
+    auto dia = new setting(this);
+    dia->exec();
+    delete dia;
+
+    upGradeuserIfo();
+
+}
+
+
+void MainWindow::upGradeuserIfo() {
+    userInfo user;
+    user.lood("./setting/option.xml");
+    ui->myName->setText(user.read_info("user.name"));
 
 }
 

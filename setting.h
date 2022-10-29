@@ -14,10 +14,20 @@ namespace Ui { class Setting; }
 QT_END_NAMESPACE
 class setting : public QDialog {
 Q_OBJECT
+signals:
+
+    void Save();
+
+public slots:
+
+    void saveTheName();
+
 public:
+
     explicit setting(QWidget *parents = nullptr);
 
     userInfo *UserInfo;
+
     ~setting();
 
 private:

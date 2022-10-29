@@ -29,7 +29,7 @@
                 <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
             </property>
         </widget>
-        <widget class="QWidget" name="">
+        <widget class="QWidget" name="layoutWidget">
             <property name="geometry">
                 <rect>
                     <x>20</x>
@@ -72,5 +72,38 @@
         </widget>
     </widget>
     <resources/>
-    <connections/>
+    <connections>
+        <connection>
+            <sender>buttonBox</sender>
+            <signal>accepted()</signal>
+            <receiver>Setting</receiver>
+            <slot>close()</slot>
+            <hints>
+                <hint type="sourcelabel">
+                    <x>180</x>
+                    <y>135</y>
+                </hint>
+                <hint type="destinationlabel">
+                    <x>199</x>
+                    <y>85</y>
+                </hint>
+            </hints>
+        </connection>
+        <connection>
+            <sender>buttonBox</sender>
+            <signal>rejected()</signal>
+            <receiver>Setting</receiver>
+            <slot>close()</slot>
+            <hints>
+                <hint type="sourcelabel">
+                    <x>180</x>
+                    <y>135</y>
+                </hint>
+                <hint type="destinationlabel">
+                    <x>199</x>
+                    <y>85</y>
+                </hint>
+            </hints>
+        </connection>
+    </connections>
 </ui>

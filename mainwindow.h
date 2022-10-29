@@ -20,6 +20,7 @@ Q_OBJECT
     Q_PROPERTY(QList<QHostAddress> allIp MEMBER all_ip);
 public:
 
+
     MainWindow(QWidget *parent = nullptr);
 
     QList<QHostAddress> all_ip;
@@ -46,6 +47,7 @@ public:
     ~MainWindow();
 
 public slots:
+    void openSetting(bool a);
 
     void btn_clicked();
 
@@ -70,7 +72,11 @@ public slots:
 private:
     Ui::MainWindow *ui;
     Q_person *person;
+
     void dirExit(QString path);
+
+    void upGradeuserIfo();
+
 };
 
 #endif // MAINWINDOW_H

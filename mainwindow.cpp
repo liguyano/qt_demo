@@ -120,9 +120,26 @@ QList<QHostAddress> MainWindow::getAllip() {
         }
 
     }
-    for (const auto &s: all_ip) {
+/*    for (const auto &s: all_ip) {
         qInfo() << s.toString() << endl;
+    }*/
+    userInfo userfo;
+    userfo.lood("./setting/option.xml");
+    auto d = userfo.getData();
+    auto user = d.RootElement()->FirstChildElement("user");
+    auto ipadd = user->FirstChild("ipAddres");
+    ipadd->Clear();
+    for (auto i: all_ip) {
+        auto ipa = new TiXmlElement("v4");
+        auto text = new TiXmlText(i.toString().toStdString().c_str());
+        ipa->LinkEndChild(text);
+        ipadd->LinkEndChild(ipa);
+        qDebug() << i;
     }
+    qInfo() << ipadd->NoChildren();
+    d.SaveFile();
+    d.SaveFile("./setting/option.xml");
+
     return addList;
 }
 
@@ -142,6 +159,8 @@ void MainWindow::sendSelfInfo(QHostAddress add, quint16 a) {
     }
     auto udps = tcp->getUdpSock();
     udps->writeDatagram("IM", add, 7001);
+    QString mess = "N" + options.value("name");
+    tcp->getUdpSock()->writeDatagram(mess.toStdString().c_str(), add, 7001);
 }
 
 void MainWindow::regist_one(QHostAddress add) {
@@ -352,6 +371,12 @@ void MainWindow::upGradeuserIfo() {
     ui->myName->setText(user.read_info("user.name"));
     options["name"] = user.read_info("user.name");
     QString mess = "N" + options.value("name");
+    for (auto ip: all_user) {
+        //auto ip=btn->property("ip").toString();
+        tcp->getUdpSock()->writeDatagram(mess.toStdString().c_str(), ip, 7001);
+    }
+
+
 }
 
 void MainWindow::add_nameAndip(QString name, QHostAddress add) {

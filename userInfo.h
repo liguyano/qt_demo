@@ -24,6 +24,8 @@ public:
 
     ~userInfo();
 
+    const TiXmlDocument &getData() const;
+
 private:
     TiXmlDocument data;
     QString settingPath;

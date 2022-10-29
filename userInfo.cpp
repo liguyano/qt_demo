@@ -110,6 +110,7 @@ bool userInfo::change_self_info(QString what, QString value) {
 userInfo::~userInfo() {
     data.SaveFile();
     data.Clear();
+    delete &data;
 }
 
 QString userInfo::read_info(QString what) {
@@ -150,4 +151,8 @@ QString userInfo::read_info(QString what) {
     }
     auto b = a->FirstChild();
     return b->Value();
+}
+
+const TiXmlDocument &userInfo::getData() const {
+    return data;
 }

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <data>
     <user>
-        <name>さやか</name>
+        <name>沙耶</name>
         <id>007</id>
         <ipAddres>
             <v4>0.0.0.0</v4>
@@ -13,7 +13,7 @@
             <name>dd</name>
             <ipAddres>
                 <v4>0.0.0.0</v4>
-                <v6>ff::0.0.0.0</v6>002
+                <v6>ff::0.0.0.0</v6>
             </ipAddres>
         </friend>
     </friends>

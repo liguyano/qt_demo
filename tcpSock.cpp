@@ -67,26 +67,26 @@ void tcpSock::onNewConnection() {
 }
 
 void tcpSock::SendFile(QTcpSocket *a, QString fileName) {
-
-    QFile file1("./aaa.txt");
+    busy = false;
+    qint32 Send = 1;
     QFile file(fileName);
     file.open(QIODevice::ReadOnly);
-    file1.open(QIODevice::WriteOnly);
+
     uchar *fpr = file.map(0, MB1);
     int starPOint = 0;
-    auto bbb = QByteArray::fromRawData((char *) fpr, MB1);
+    QByteArray bbb /* =QByteArray::fromRawData((char *) fpr, MB1)*/;
     auto persize = fileInfo.size() / MB1;
-    a->write(bbb);
-    file1.write(bbb);
-
-    starPOint = file.size() < MB1 ? 0 : MB1;
+    // a->write(bbb);
+    //starPOint = file.size() < MB1 ? 0 : MB1;
     while ((starPOint + MB1) < file.size()) {
         busy = true;
-        starPOint += MB1;
+
+        qInfo() << ++Send << "MB";
         fpr = file.map(starPOint, MB1);
+        starPOint += MB1;
         bbb = QByteArray::fromRawData((char *) fpr, MB1);
+        qInfo() << bbb.left(10);
         a->write(bbb);
-        file1.write(bbb);
         pers->setValue(pers->value() + persize);
         a->waitForBytesWritten(100);
         file.unmap(fpr);
@@ -95,7 +95,7 @@ void tcpSock::SendFile(QTcpSocket *a, QString fileName) {
     fpr = file.map(starPOint, file.size() - starPOint);
     bbb = QByteArray::fromRawData((char *) fpr, file.size() - starPOint);
     a->write(bbb);
-    file1.write(bbb);
+    qInfo() << ++Send;
     //delete fpr;
     busy = false;
     pers->setValue(100);

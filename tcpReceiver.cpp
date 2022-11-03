@@ -14,6 +14,7 @@ void tcpReceiver::deal_mess() {
 
     auto a = rec->readAll();
     //qInfo()<<a;
+    //qInfo()<<a.left(9);
     if (a.right(5) == "1Pack") {
         rec->write("OK");
         a = a.left(a.size() - 5);

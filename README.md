@@ -14,7 +14,7 @@ This project is powered by QT.
 
 ## about this version 2.0
 
-this version can show the ipaddress show a name instand of an ip  
+this version can show the ipaddress and use a name instand of an ip  
 and it can send the full file now!
 
 * 111

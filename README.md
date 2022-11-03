@@ -12,6 +12,11 @@ this version is already implement the text send and ***file convert***. But the
 This project is powered by QT.
 > System.out.println("hello world");
 
+## about this version 2.0
+
+this version can show the ipaddress show a name instand of an ip  
+and it can send the full file now!
+
 * 111
 * 222
 

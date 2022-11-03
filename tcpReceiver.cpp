@@ -21,6 +21,7 @@ void tcpReceiver::deal_mess() {
     if (a.right(3) == "end") {
         bytes.push_back(a.mid(0, a.size() - 3));
         qInfo() << "end" << a;
+        qInfo() << size_recv;
         save();
         auto add = rec->peerAddress();
         //emit file_persent(add,100,0);
@@ -50,9 +51,9 @@ void tcpReceiver::end() {
 
 void tcpReceiver::conn(const QHostAddress &add) {
     file = new QFile("./file_recv/" + fileName);
+    size_recv = 0;
     file->open(QIODevice::WriteOnly);
     file->close();
-
     rec->connectToHost(add, 7001);
 }
 
@@ -63,7 +64,7 @@ void tcpReceiver::save() {
     }
     //   emit file_persent(rec->peerAddress(),(size_recv*100)/size,1);
     pers->setValue((size_recv * 100) / size);
-    qInfo() << size_recv;
+    //qInfo() << size_recv;
     file->close();
     bytes.clear();
 //    file->close();

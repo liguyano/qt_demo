@@ -20,7 +20,7 @@ void tcpReceiver::deal_mess() {
     }
     if (a.right(3) == "end") {
         bytes.push_back(a.mid(0, a.size() - 3));
-        //qInfo()<<"yes"<<a;
+        qInfo() << "end" << a;
         save();
         auto add = rec->peerAddress();
         //emit file_persent(add,100,0);

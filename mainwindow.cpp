@@ -113,7 +113,7 @@ QList<QHostAddress> MainWindow::getAllip() {
 
     for (const auto &hi: addList) {
 
-        if (QAbstractSocket::IPv4Protocol == hi.protocol())//test if it us ipv4
+        if (QAbstractSocket::IPv4Protocol == hi.protocol())//test if it is ipv4
         {
             all_ip.push_back(hi);
             auto b = hi.toString().split('.');
@@ -129,8 +129,10 @@ QList<QHostAddress> MainWindow::getAllip() {
     userInfo userfo;
     userfo.lood("./setting/option.xml");
     userfo.save_list(ssl, "user.ipAddres", "v4", 1);
-    auto aa = userfo.get_element("user");
-    qInfo() << aa->Attribute("name");
+    /*
+     * read attribute ok
+     * auto aa = userfo.get_element("user");
+     qInfo() << aa->Attribute("name");*/
     return addList;
 }
 

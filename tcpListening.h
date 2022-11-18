@@ -19,9 +19,9 @@ protected:
     [[noreturn]] void run() Q_DECL_OVERRIDE;
 
 public:
-    explicit tcpListening(QObject *parent = nullptr);
+    explicit tcpListening(QObject *parent = nullptr, int port = 7001);
 
-    tcpListening();
+    tcpListening(int port = 7001);
 
 public slots:
 

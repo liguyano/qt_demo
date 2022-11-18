@@ -7,6 +7,7 @@
 
 #include "publicInclude.h"
 
+
 class tcpSock : public QObject {
 Q_OBJECT
 public:

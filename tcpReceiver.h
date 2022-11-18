@@ -6,6 +6,7 @@
 #define QT_DEMO_TCPRECEIVER_H
 
 #include "publicInclude.h"
+#include "userInfo.h"
 
 class tcpReceiver : public QObject {
 Q_OBJECT

@@ -55,7 +55,9 @@ void tcpReceiver::conn(const QHostAddress &add) {
     size_recv = 0;
     file->open(QIODevice::WriteOnly);
     file->close();
-    rec->connectToHost(add, 7001);
+    userInfo uu;
+    uu.lood("./setting/option.xml");
+    rec->connectToHost(add, uu.read_info("user.port").toInt());
 }
 
 void tcpReceiver::save() {

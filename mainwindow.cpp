@@ -14,6 +14,10 @@ MainWindow::MainWindow(QWidget *parent)
     this->upGradeuserIfo();
     connect(ui->actionhow, SIGNAL(triggered(bool)), this, SLOT(openSetting(bool)));
     connect(ui->actionself_info, SIGNAL(triggered(bool)), this, SLOT(open_self_info(bool)));
+    userInfo us;
+    us.lood("./setting/option.xml");
+    port = us.read_info("user.port").toInt();
+    qInfo() << "port" << port;
     //  ui->textBrowser->setAlignment(Qt::AlignLeft);
     auto btn = ui->centralwidget->findChild<QPushButton *>("unknow");
     connect(btn, SIGNAL(clicked(bool)), this, SLOT(btn_clicked()));
@@ -39,7 +43,8 @@ MainWindow::MainWindow(QWidget *parent)
     getAllip();
     qInfo() << all_ip.size();
     // qInfo()<<all_ip->at(1).toString();
-    tcp = new tcpListening(this);
+    tcp = new tcpListening(this, port);
+    tcp->setProperty("port", port);
     tcp->start();
     sock = new tcpSock("s.txt", this);
     receiver = new tcpReceiver("", this);
@@ -62,7 +67,7 @@ MainWindow::MainWindow(QWidget *parent)
 
 MainWindow::~MainWindow() {
     for (const auto &ip: all_user) {
-        tcp->getUdpSock()->writeDatagram("quit", ip, 7001);
+        tcp->getUdpSock()->writeDatagram("quit", ip, port);
     }
     qInfo() << "bye";
     for (int i = 0; i < all_user.size(); ++i) {
@@ -83,7 +88,7 @@ void MainWindow::btn_clicked() {
     QByteArray me = "M";
     me += ui->lineEdit->text();
     if (ui->lineEdit->text().size() > 0) {
-        tcp->getUdpSock()->writeDatagram(me, all_user[who], 7001);
+        tcp->getUdpSock()->writeDatagram(me, all_user[who], this->port);
         QDateTime curDateTime = QDateTime::currentDateTime();
         QString str = "<div style=\" text-align:right\">";
         //    ui->textBrowser->setAlignment(Qt::AlignRight);
@@ -151,9 +156,9 @@ void MainWindow::sendSelfInfo(QHostAddress add, quint16 a) {
         }
     }
     auto udps = tcp->getUdpSock();
-    udps->writeDatagram("IM", add, 7001);
+    udps->writeDatagram("IM", add, this->port);
     QString mess = "N" + options.value("name");
-    tcp->getUdpSock()->writeDatagram(mess.toStdString().c_str(), add, 7001);
+    tcp->getUdpSock()->writeDatagram(mess.toStdString().c_str(), add, this->port);
 }
 
 void MainWindow::regist_one(QHostAddress add) {
@@ -172,7 +177,7 @@ void MainWindow::regist_one(QHostAddress add) {
 
         if (user.isEqual(add)) {
             buttons[i]->setDisabled(false);
-            //tcp->getUdpSock()->writeDatagram("IM",add,7001);
+            //tcp->getUdpSock()->writeDatagram("IM",add,this->port);
             return;
         }
         i++;
@@ -184,7 +189,7 @@ void MainWindow::regist_one(QHostAddress add) {
         mes.push_back(record.readAll());
     }
     record.close();
-    tcp->getUdpSock()->writeDatagram("IM", add, 7001);
+    tcp->getUdpSock()->writeDatagram("IM", add, this->port);
     auto btn = new QPushButton(this);
     btn->setProperty("id", all_user.size());
     ip_name_map[add.toString()] = add.toString();
@@ -196,7 +201,7 @@ void MainWindow::regist_one(QHostAddress add) {
     messages.push_back(mes);
     buttons.push_back(btn);
     QString mess = "N" + options.value("name");
-    tcp->getUdpSock()->writeDatagram(mess.toStdString().c_str(), add, 7001);
+    tcp->getUdpSock()->writeDatagram(mess.toStdString().c_str(), add, this->port);
     connect(btn, SIGNAL(clicked(bool)), this, SLOT(usr_ben_clicked()));
 }
 
@@ -253,8 +258,8 @@ void MainWindow::sent2All() {
             needIp += QString::number(i);
             //   qInfo()<<needIp;
             QHostAddress tmp(needIp);
-            //tcp->getUdpSock()->writeDatagram("IM",tmp,7001);
-            tcp->getUdpSock()->writeDatagram("hello", tmp, 7001);
+            //tcp->getUdpSock()->writeDatagram("IM",tmp,this->port);
+            tcp->getUdpSock()->writeDatagram("hello", tmp, this->port);
         }
     }
 }
@@ -273,22 +278,33 @@ void MainWindow::remove_one(QHostAddress add) {
 }
 
 void MainWindow::send_file() {
-    QString fileName = QFileDialog::getOpenFileName(this, QStringLiteral("文件对话框！"), "D:");
+    userInfo us;
+    us.lood("./setting/option.xml");
+
+
+    QString fileName = QFileDialog::getOpenFileName(this, QStringLiteral("文件对话框！"),
+                                                    us.read_info("user.fileOpenDir"));
     if (fileName.size() <= 0)
         return;
-
-    //  qInfo()<<fileName;
+    qInfo() << fileName;
+    auto paths = fileName.split('/');
+    QString pathName = "";
+    for (int i = 0; i < paths.size() - 1; ++i) {
+        pathName += paths[i];
+        pathName += "/";
+    }
+    us.change_self_info("user.fileOpenDir", pathName);
     sock->fileNa = fileName;
     auto pers = new QProgressBar(this);
     pers->setValue(0);
     sock->pers = pers;
-    sock->star(7001);
+    port = us.read_info("user.port").toInt();
+    sock->star(port);
     auto size = QFileInfo(fileName).size();
-    QString mess = "F_" + fileName.split('/')[fileName.split('/').size() - 1] + "_" + QString::number(size);
-    tcp->getUdpSock()->writeDatagram(mess.toUtf8(), all_user[who], 7001);
+    QString mess = "F_" + paths[paths.size() - 1] + "_" + QString::number(size);
+    tcp->getUdpSock()->writeDatagram(mess.toUtf8(), all_user[who], port);
     //  messages[who].append(QString("<div style=\" text-align:right\"><img filename= \"%1\" src=\"a.png\" width=\"034\" height=\"028\" alt=\"404\"  /><div/>").arg(fileName));
     // buttons[who]->click();
-
     ui->perbars->addWidget(pers);
     auto la = new QLabel(fileName + "\nto " + all_user[who].toString());
     ui->perbars->addWidget(la);
@@ -350,9 +366,9 @@ void MainWindow::dirExit(QString path) {
 
 void MainWindow::openSetting(bool a) {
     auto dia = new setting(this);
+    connect(dia, SIGNAL(port_change(qint32)), this, SLOT(port_change(qint32)));
     dia->exec();
     delete dia;
-
     upGradeuserIfo();
 
 }
@@ -366,7 +382,7 @@ void MainWindow::upGradeuserIfo() {
     QString mess = "N" + options.value("name");
     for (auto ip: all_user) {
         //auto ip=btn->property("ip").toString();
-        tcp->getUdpSock()->writeDatagram(mess.toStdString().c_str(), ip, 7001);
+        tcp->getUdpSock()->writeDatagram(mess.toStdString().c_str(), ip, this->port);
     }
 
 
@@ -387,6 +403,10 @@ void MainWindow::open_self_info(bool a) {
     dia->exec();
     delete dia;
 
+}
+
+void MainWindow::port_change(qint32 port) {
+    this->port = port;
 }
 
 

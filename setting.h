@@ -18,6 +18,8 @@ signals:
 
     void Save();
 
+    void port_change(qint32 port);
+
 public slots:
 
     void saveTheName();

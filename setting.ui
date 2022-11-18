@@ -29,13 +29,13 @@
                 <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
             </property>
         </widget>
-        <widget class="QWidget" name="layoutWidget">
+        <widget class="QWidget" name="">
             <property name="geometry">
                 <rect>
-                    <x>20</x>
-                    <y>20</y>
+                    <x>30</x>
+                    <y>30</y>
                     <width>209</width>
-                    <height>48</height>
+                    <height>57</height>
                 </rect>
             </property>
             <layout class="QVBoxLayout" name="verticalLayout">
@@ -62,10 +62,16 @@
                     </widget>
                 </item>
                 <item>
-                    <widget class="QLabel" name="label_2">
-                        <property name="text">
-                            <string>none</string>
+                    <widget class="QSplitter" name="splitter_2">
+                        <property name="orientation">
+                            <enum>Qt::Horizontal</enum>
                         </property>
+                        <widget class="QLabel" name="label_3">
+                            <property name="text">
+                                <string>port</string>
+                            </property>
+                        </widget>
+                        <widget class="QLineEdit" name="portInput"/>
                     </widget>
                 </item>
             </layout>

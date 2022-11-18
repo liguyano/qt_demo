@@ -22,9 +22,9 @@
 }
 
 
-tcpListening::tcpListening() {
+tcpListening::tcpListening(int port) {
     this->udpSock = new QUdpSocket;
-    udpSock->bind(7001);
+    udpSock->bind(port);
     this->setProperty("times", 0);
     printf_s("bind 7001 succeed\n");
     connect(udpSock, SIGNAL(readyRead()), this, SLOT(processData()));
@@ -80,10 +80,10 @@ void tcpListening::processData() {
     }
 }
 
-tcpListening::tcpListening(QObject *parent) : QThread(parent) {
+tcpListening::tcpListening(QObject *parent, int port) : QThread(parent) {
     this->udpSock = new QUdpSocket;
-    udpSock->bind(7001);
-    printf_s("bind 7001 succeed\n");
+    udpSock->bind(port);
+    printf_s("bind %d succeed\n", port);
     connect(udpSock, SIGNAL(readyRead()), this, SLOT(processData()));
 }
 

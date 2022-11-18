@@ -112,7 +112,7 @@ long long tcpSock::star(int port = 7001) {
     auto size = fileInfo.size();
     qInfo() << size;
     tcp->listen(add, port);
-    qInfo() << "creat host succed" << endl;
+ //   qInfo() << "creat host succed" << endl;
 
     return size;
 }

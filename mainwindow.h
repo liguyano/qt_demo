@@ -50,6 +50,7 @@ public:
     ~MainWindow();
 
 public slots:
+    void port_change(qint32 port);
 
     void open_self_info(bool a);
 
@@ -80,6 +81,7 @@ public slots:
 private:
     Ui::MainWindow *ui;
     Q_person *person;
+    qint32 port;
 
     void dirExit(QString path);
 

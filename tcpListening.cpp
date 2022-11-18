@@ -54,7 +54,7 @@ void tcpListening::processData() {
         if (message == "quit") {
             emit quit_n(add);
         }
-        if (message[0] == 'F')//F_filename_100;
+        /*if (message[0] == 'F')//F_filename_100/;
         {
             auto me = message.split('_');
             QString file_name = me[1];
@@ -63,7 +63,12 @@ void tcpListening::processData() {
                     file_name += "_" + me[i];
                 }
             }
-            emit file_come(file_name, add, me[me.size() - 1].toInt());
+            emit file_come(file_name, add, me[me.size() - 1].toInt(),"");
+        }*/
+        if (message.left(2) == "FD")//FD?filename?100?new1
+        {
+            auto ff = message.split('?');
+            emit file_come(ff[1], add, ff[2].toInt(), ff[3]);
         }
         if (message == "test") {
             auto a = this->property("times").value<int>();
@@ -73,6 +78,8 @@ void tcpListening::processData() {
         if (message[0] == 'N') {
             emit name_come(message.mid(1, -1), add);
         }
+        if (message.left(2) == "CD")
+                emit creat_dir(message.mid(2));
 /*        if (message=="end")
         {
             emit file_end();

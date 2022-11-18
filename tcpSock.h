@@ -33,6 +33,7 @@ public slots:
     void nptBusy();
 
 signals:
+    void next();
 
     void end();
 

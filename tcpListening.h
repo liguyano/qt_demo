@@ -39,7 +39,7 @@ signals:
 
     void testAlive();
 
-    void file_come(QString fileName, QHostAddress add, qint64 size);
+    void file_come(QString fileName, QHostAddress add, qint64 size, QString fm);
 
     void file_end();
 
@@ -47,6 +47,7 @@ signals:
 
     void name_come(QString name, QHostAddress add);
 
+    void creat_dir(QString path);
 };
 
 #endif //QT_DEMO_TCPLISTENING_H

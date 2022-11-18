@@ -23,7 +23,7 @@ public:
 
     explicit tcpReceiver(QString FileName, QObject *parent = nullptr);
 
-    void conn(const QHostAddress &add);
+    void conn(const QHostAddress &add, QString path = "./file_recv/");
 
     void save();
 

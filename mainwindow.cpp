@@ -1,3 +1,4 @@
+#include <QMessageBox>
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
@@ -15,6 +16,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->actionhow, SIGNAL(triggered(bool)), this, SLOT(openSetting(bool)));
     connect(ui->actionself_info, SIGNAL(triggered(bool)), this, SLOT(open_self_info(bool)));
     userInfo us;
+    ui->groupBox->hide();
     us.lood("./setting/option.xml");
     port = us.read_info("user.port").toInt();
     qInfo() << "port" << port;
@@ -60,9 +62,12 @@ MainWindow::MainWindow(QWidget *parent)
     connect(tcp, SIGNAL(testAlive()), this, SLOT(test_alive()));
     connect(tcp, SIGNAL(quit_n(QHostAddress)), this, SLOT(remove_one(QHostAddress)));
     connect(ui->pushButton, SIGNAL(clicked(bool)), this, SLOT(send_file()));
-    connect(tcp, SIGNAL(file_come(QString, QHostAddress, qint64)), this,
-            SLOT(recv_file(QString, QHostAddress, qint64)));
+    connect(tcp, SIGNAL(file_come(QString, QHostAddress, qint64, QString)), this,
+            SLOT(recv_file(QString, QHostAddress, qint64, QString)));
     connect(tcp, SIGNAL(name_come(QString, QHostAddress)), this, SLOT(add_nameAndip(QString, QHostAddress)));
+    connect(tcp, SIGNAL(creat_dir(QString)), this, SLOT(creatDir(QString)));
+    connect(ui->dir_send, SIGNAL(clicked(bool)), this, SLOT(send_dir()));
+    connect(sock, SIGNAL(next()), this, SLOT(nextFIle()));
 }
 
 MainWindow::~MainWindow() {
@@ -226,7 +231,7 @@ void MainWindow::add_message(const QString &message, const QHostAddress &add) {
             //    ui->textBrowser->setAlignment(Qt::AlignLeft);
             QDateTime curDateTime = QDateTime::currentDateTime();
             messages[i].push_back("<div style=\" text-align:left; \"><font color ='black' size=3>" +
-                                  curDateTime.toString("hh:mm:ss") + "</font><br/>");
+                                          curDateTime.toString("hh:mm:ss") + "</font><br/>");
             messages[i].push_back(
                     "<font color ='black' size=6 style=\"  background-color: #c2bdbd;\">" + message + "</font><div/>");
             if (i == who) {
@@ -280,45 +285,20 @@ void MainWindow::remove_one(QHostAddress add) {
 void MainWindow::send_file() {
     userInfo us;
     us.lood("./setting/option.xml");
-
-
     QString fileName = QFileDialog::getOpenFileName(this, QStringLiteral("文件对话框！"),
                                                     us.read_info("user.fileOpenDir"));
-    if (fileName.size() <= 0)
-        return;
-    qInfo() << fileName;
-    auto paths = fileName.split('/');
-    QString pathName = "";
-    for (int i = 0; i < paths.size() - 1; ++i) {
-        pathName += paths[i];
-        pathName += "/";
-    }
-    us.change_self_info("user.fileOpenDir", pathName);
-    sock->fileNa = fileName;
-    auto pers = new QProgressBar(this);
-    pers->setValue(0);
-    sock->pers = pers;
-    port = us.read_info("user.port").toInt();
-    sock->star(port);
-    auto size = QFileInfo(fileName).size();
-    QString mess = "F_" + paths[paths.size() - 1] + "_" + QString::number(size);
-    tcp->getUdpSock()->writeDatagram(mess.toUtf8(), all_user[who], port);
-    //  messages[who].append(QString("<div style=\" text-align:right\"><img filename= \"%1\" src=\"a.png\" width=\"034\" height=\"028\" alt=\"404\"  /><div/>").arg(fileName));
-    // buttons[who]->click();
-    ui->perbars->addWidget(pers);
-    auto la = new QLabel(fileName + "\nto " + all_user[who].toString());
-    ui->perbars->addWidget(la);
+    this->sendF(fileName);
 }
 
 
-void MainWindow::recv_file(QString fileName, QHostAddress add, qint64 size) {
+void MainWindow::recv_file(QString fileName, QHostAddress add, qint64 size, QString dir) {
 //auto reciver=new tcpReceiver(add,fileName,this);
     auto pers = new QProgressBar(this);
     pers->setValue(0);
     receiver->fileName = fileName;
     receiver->size = size;
     receiver->pers = pers;
-    receiver->conn(add);
+    receiver->conn(add, "./file_recv/" + dir);
     ui->perbars->addWidget(pers);
     auto la = new QLabel(fileName + "\nfrom " + add.toString());
     ui->perbars->addWidget(la);
@@ -357,7 +337,6 @@ void MainWindow::changImgWidth(QString &origin, qint32 width) {
 void MainWindow::dirExit(QString path) {
     QDir dir(path);
     if (dir.exists()) {
-
     } else {
         qDebug() << dir.mkdir("." + path);
     }
@@ -407,6 +386,89 @@ void MainWindow::open_self_info(bool a) {
 
 void MainWindow::port_change(qint32 port) {
     this->port = port;
+}
+
+void MainWindow::sendF(QString fileName, QString p) {
+
+    if (fileName.size() <= 0)
+        return;
+    printf_s("filename: %s path%s \n", fileName.toStdString().c_str(), p.toStdString().c_str());
+    auto paths = fileName.split('/');
+    QString pathName = "";
+    for (int i = 0; i < paths.size() - 1; ++i) {
+        pathName += paths[i];
+        pathName += "/";
+    }
+    userInfo us;
+    us.lood("./setting/option.xml");
+    us.change_self_info("user.fileOpenDir", pathName);
+    sock->fileNa = fileName;
+    auto pers = new QProgressBar(this);
+    pers->setValue(0);
+    sock->pers = pers;
+    port = us.read_info("user.port").toInt();
+    sock->star(port);
+    auto size = QFileInfo(fileName).size();
+    QString mess = "FD?" + paths[paths.size() - 1] + "?" + QString::number(size) + "?" + p;
+    tcp->getUdpSock()->writeDatagram(mess.toUtf8(), all_user[who], port);
+    //  messages[who].append(QString("<div style=\" text-align:right\"><img filename= \"%1\" src=\"a.png\" width=\"034\" height=\"028\" alt=\"404\"  /><div/>").arg(fileName));
+    // buttons[who]->click();
+    ui->perbars->addWidget(pers);
+    auto la = new QLabel(fileName + "\nto " + all_user[who].toString());
+    ui->perbars->addWidget(la);
+}
+
+QString createMultipleFolders(const QString path) {
+    QDir dir(path);
+    if (dir.exists(path)) {
+        return path;
+    }
+
+    QString parentDir = createMultipleFolders(path.mid(0, path.lastIndexOf('/')));
+    QString dirName = path.mid(path.lastIndexOf('/') + 1);
+    QDir parentPath(parentDir);
+    if (!dirName.isEmpty()) {
+        parentPath.mkpath(dirName);
+    }
+    return parentDir + "/" + dirName;
+}
+
+void MainWindow::creatDir(QString path) {
+    qInfo() << path << endl;
+    createMultipleFolders("./file_recv/" + path);
+}
+
+void MainWindow::send_dir() {
+    userInfo us;
+    us.lood("./setting/option.xml");
+    if (file_list.size() > 0) {
+        QMessageBox::critical(this, tr("warning"), tr("请等待文件夹传输完成"));
+        return;
+    }
+    QString dir = QFileDialog::getExistingDirectory(this, tr("Open Directory"), us.read_info("user.fileOpenDir"),
+                                                    QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
+    if (dir != "") {
+        qInfo() << dir;
+        auto paths = dir.split("/");
+        auto path = "CD" + paths[paths.size() - 1];
+        this->tcp->getUdpSock()->writeDatagram(path.toStdString().c_str(), all_user[who], port);
+        path = paths[paths.size() - 1];
+        file_path_tmp = path + "/";
+        QDir dir1(dir);
+        dir1.setFilter(QDir::Files);
+        file_list = dir1.entryList(QDir::Files);
+        emit sock->next();
+    }
+
+}
+
+void MainWindow::nextFIle() {
+    if (file_list.size() > 1) {
+        sendF(file_list[0], file_path_tmp);
+        file_list.removeAt(0);
+    } else {
+        file_path_tmp = "";
+    }
 }
 
 

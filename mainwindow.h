@@ -74,18 +74,30 @@ public slots:
 
     void send_file();
 
-    void recv_file(QString fileName, QHostAddress add, qint64 size);
+    void send_dir();
+
+    void recv_file(QString fileName, QHostAddress add, qint64 size, QString dir);
 
     void add_nameAndip(QString name, QHostAddress add);
 
+    void creatDir(QString path);
+
+    void nextFIle();
+
+
 private:
+    QStringList file_list;
     Ui::MainWindow *ui;
     Q_person *person;
     qint32 port;
+    QString file_path_tmp;
+
+    void sendF(QString filename, QString path = "");
 
     void dirExit(QString path);
 
     void upGradeuserIfo();
+
 
 };
 

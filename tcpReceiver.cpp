@@ -40,7 +40,7 @@ void tcpReceiver::deal_mess() {
 }
 
 tcpReceiver::~tcpReceiver() {
-    file->close();
+    //file->close();
 }
 
 void tcpReceiver::end() {
@@ -50,8 +50,8 @@ void tcpReceiver::end() {
     qInfo() << "received";
 }
 
-void tcpReceiver::conn(const QHostAddress &add) {
-    file = new QFile("./file_recv/" + fileName);
+void tcpReceiver::conn(const QHostAddress &add, QString path) {
+    file = new QFile(path + fileName);
     size_recv = 0;
     file->open(QIODevice::WriteOnly);
     file->close();

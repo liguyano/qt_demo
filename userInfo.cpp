@@ -3,7 +3,7 @@
 //
 
 #include "userInfo.h"
-#define C_STR(A) A.toStdString().c_str()
+
 
 userInfo::userInfo() {
     auto a = 0;
@@ -22,36 +22,30 @@ bool userInfo::creatInitFile() {
 
     } else {
         setData.open(QIODevice::WriteOnly);
-        setData.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
+        setData.write("<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n"
                       "<data>\n"
                       "    <user>\n"
-                      "        <name>\n"
-                      "            deault\n"
-                      "        </name>\n"
-                      "        <id>001</id>\n"
+                      "        <name>沙耶</name>\n"
+                      "        <id>007</id>\n"
                       "        <ipAddres>\n"
-                      "            <v4>\n"
-                      "                0.0.0.0\n"
-                      "            </v4>\n"
-                      "            <v6>\n"
-                      "                ff::0.0.0.0\n"
-                      "            </v6>\n"
+                      "            <v4>192.168.122.1</v4>\n"
+                      "            <v4>192.168.88.1</v4>\n"
+                      "            <v4>192.168.1.100</v4>\n"
+                      "            <v4>172.30.96.1</v4>\n"
                       "        </ipAddres>\n"
+                      "        <port>7001</port>\n"
+                      "        <fileOpenDir>C:/Users/kurum/OneDrive - jxstnu.edu.cn/筆記/大3上/國貿實務/实务练习/</fileOpenDir>\n"
                       "    </user>\n"
                       "    <friends>\n"
-                      "        <friend name=\"\">\n"
+                      "        <friend name=\"dd\">\n"
+                      "            <name>dd</name>\n"
                       "            <ipAddres>\n"
-                      "                <v4>\n"
-                      "                    0.0.0.0\n"
-                      "                </v4>\n"
-                      "                <v6>\n"
-                      "                    ff::0.0.0.0\n"
-                      "                </v6>\n"
+                      "                <v4>0.0.0.0</v4>\n"
+                      "                <v6>ff::0.0.0.0</v6>\n"
                       "            </ipAddres>\n"
                       "        </friend>\n"
                       "    </friends>\n"
-                      "</data>"
-        );
+                      "</data>");
         setData.close();
     }
 

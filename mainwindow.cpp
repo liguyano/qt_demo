@@ -461,10 +461,8 @@ void MainWindow::send_dir() {
         QDir dir1(dir);
         dir1.setFilter(QDir::Files);
         file_list = dir1.entryList(QDir::Files);
-        for (auto &ff: file_list) {
-            ff = dir + "/" + ff + "?" + path;
-        }
-        emit sock->next();
+        for (auto &ff: file_list)ff = dir + "/" + ff + "?" + path + "/";
+        if (!sock->busy)emit sock->next();
     }
 
 }

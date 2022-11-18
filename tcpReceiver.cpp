@@ -49,13 +49,17 @@ void tcpReceiver::end() {
 }
 
 void tcpReceiver::conn(const QHostAddress &add, QString path) {
+    printf_s("path%s\n", C_STR(path));
     file = new QFile(path + fileName);
     size_recv = 0;
     file->open(QIODevice::WriteOnly);
     file->close();
     userInfo uu;
     uu.lood("./setting/option.xml");
-    rec->connectToHost(add, uu.read_info("user.port").toInt());
+    printf_s("ip:%s,%s\n", C_STR(add.toString()), C_STR(uu.read_info("user.port")));
+    rec->connectToHost(add.toString().split(":")[add.toString().split(":").size() - 1],
+                       uu.read_info("user.port").toInt());
+    printf_s("connected\n");
 }
 
 void tcpReceiver::save() {

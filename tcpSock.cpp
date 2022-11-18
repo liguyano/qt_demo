@@ -19,6 +19,7 @@ tcpSock::tcpSock(QString fileName, QObject *parent) : QObject(parent) {
 
 void tcpSock::onNewConnection() {
     QTcpSocket *a = tcp->nextPendingConnection();
+    printf_s("new connected service;");
     if (a == NULL) {
         qInfo() << "wrong";
         return;
@@ -77,12 +78,10 @@ long long tcpSock::star(int port = 7001) {
     qInfo() << size;
     tcp->listen(add, port);
     qInfo() << "creat host succed";
-
     return size;
 }
 
 void tcpSock::deal_with() {
-
     auto a = qobject_cast<QTcpSocket *>(sender());
     disconnect(a);
     a->close();
@@ -90,8 +89,6 @@ void tcpSock::deal_with() {
     qInfo() << "over";
     busy = false;
     emit next();
-
-
 }
 
 void tcpSock::nptBusy() {

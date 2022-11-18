@@ -37,7 +37,7 @@ add_executable(qt_Demo main.cpp mainwindow.cpp Q_person.cpp Q_person.h tcpListen
         tcpSock.h tcpReceiver.cpp tcpReceiver.h userInfo.cpp userInfo.h setting.cpp setting.h
         ${project_FORMS_HEADERS}
         InfoDialog.cpp InfoDialog.h)
-add_executable(test modelTest.cpp tcpSock.cpp tcpSock.h tcpReceiver.cpp tcpReceiver.h)
+add_executable(test modelTest.cpp)
 add_library(xml tinyxml/tinyxml.cpp tinyxml/tinystr.cpp tinyxml/tinyxmlerror.cpp tinyxml/tinyxmlparser.cpp)
 
 target_link_libraries(test

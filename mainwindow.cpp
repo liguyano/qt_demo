@@ -287,7 +287,10 @@ void MainWindow::send_file() {
     us.lood("./setting/option.xml");
     QString fileName = QFileDialog::getOpenFileName(this, QStringLiteral("文件对话框！"),
                                                     us.read_info("user.fileOpenDir"));
-    this->sendF(fileName);
+    file_list.append(fileName + "?" + "");
+    if (!sock->isBusy()) {
+        emit sock->next();
+    }
 }
 
 
@@ -389,10 +392,11 @@ void MainWindow::port_change(qint32 port) {
 }
 
 void MainWindow::sendF(QString fileName, QString p) {
+    sock->busy = true;
 
     if (fileName.size() <= 0)
         return;
-    printf_s("filename: %s path%s \n", fileName.toStdString().c_str(), p.toStdString().c_str());
+    printf_s("line 395: filename: %s path%s \n", fileName.toStdString().c_str(), p.toStdString().c_str());
     auto paths = fileName.split('/');
     QString pathName = "";
     for (int i = 0; i < paths.size() - 1; ++i) {
@@ -448,7 +452,7 @@ void MainWindow::send_dir() {
     QString dir = QFileDialog::getExistingDirectory(this, tr("Open Directory"), us.read_info("user.fileOpenDir"),
                                                     QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
     if (dir != "") {
-        qInfo() << dir;
+        qInfo() << "line 451: " << dir;
         auto paths = dir.split("/");
         auto path = "CD" + paths[paths.size() - 1];
         this->tcp->getUdpSock()->writeDatagram(path.toStdString().c_str(), all_user[who], port);
@@ -457,17 +461,21 @@ void MainWindow::send_dir() {
         QDir dir1(dir);
         dir1.setFilter(QDir::Files);
         file_list = dir1.entryList(QDir::Files);
+        for (auto &ff: file_list) {
+            ff = dir + "/" + ff + "?" + path;
+        }
         emit sock->next();
     }
 
 }
 
 void MainWindow::nextFIle() {
-    if (file_list.size() > 1) {
-        sendF(file_list[0], file_path_tmp);
+    if (file_list.size() >= 1) {
+        // QThread::sleep(1);
+        sendF(file_list[0].split("?")[0], file_list[0].split("?")[1]);
         file_list.removeAt(0);
     } else {
-        file_path_tmp = "";
+
     }
 }
 

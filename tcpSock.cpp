@@ -8,44 +8,7 @@
 
 #define MB1 10485760
 
-void sendF(tcpSock *sock, QTcpSocket *a, QString fileName) {
-    QFile file(fileName);
-    QFile file1("./aaa.txt");
-    file1.open(QIODevice::WriteOnly);
-    file.open(QIODevice::ReadOnly);
-    uchar *fpr = file.map(0, MB1);
-    int starPOint = 0;
-    auto bbb = QByteArray::fromRawData((char *) fpr, MB1);
-    auto persize = file.size() / MB1;
-    a->write(bbb);
-    file1.write(bbb);
 
-    starPOint = file.size() < MB1 ? 0 : MB1;
-    while ((starPOint + MB1) < file.size()) {
-        //busy=true;
-        starPOint += MB1;
-        fpr = file.map(starPOint, MB1);
-        bbb = QByteArray::fromRawData((char *) fpr, MB1);
-        file1.write(bbb);
-        a->write(bbb);
-        sock->pers->setValue(sock->pers->value() + persize);
-        a->waitForBytesWritten(-1);
-        file.unmap(fpr);
-        //a->write("1Pack");
-    }
-    fpr = file.map(starPOint, file.size() - starPOint);
-    bbb = QByteArray::fromRawData((char *) fpr, file.size() - starPOint);
-    file1.write(bbb);
-    a->write(bbb);
-    //delete fpr;
-    //busy= false;
-    sock->pers->setValue(100);
-    file.unmap(fpr);
-    file.close();
-    file1.close();
-    a->write("end");
-    a->setProperty("id", 1);
-}
 
 tcpSock::tcpSock(QString fileName, QObject *parent) : QObject(parent) {
     fileNa = fileName;
@@ -67,7 +30,7 @@ void tcpSock::onNewConnection() {
 }
 
 void tcpSock::SendFile(QTcpSocket *a, QString fileName) {
-    busy = false;
+
     qint32 Send = 1;
     QFile file(fileName);
     file.open(QIODevice::ReadOnly);
@@ -79,7 +42,7 @@ void tcpSock::SendFile(QTcpSocket *a, QString fileName) {
     // a->write(bbb);
     //starPOint = file.size() < MB1 ? 0 : MB1;
     while ((starPOint + MB1) < file.size()) {
-        busy = true;
+
 
         qInfo() << ++Send << "MB";
         fpr = file.map(starPOint, MB1);
@@ -97,22 +60,23 @@ void tcpSock::SendFile(QTcpSocket *a, QString fileName) {
     a->write(bbb);
     qInfo() << ++Send;
     //delete fpr;
-    busy = false;
     pers->setValue(100);
     file.unmap(fpr);
     file.close();
     a->write("end");
     a->setProperty("id", 1);
+
 }
 
 long long tcpSock::star(int port = 7001) {
+    busy = true;
     QHostAddress add("localhost");
-    qInfo() << fileNa << endl;
+    qInfo() << "line 72: " + fileNa << endl;
     fileInfo = QFileInfo(fileNa);
     auto size = fileInfo.size();
     qInfo() << size;
     tcp->listen(add, port);
- //   qInfo() << "creat host succed" << endl;
+    qInfo() << "creat host succed";
 
     return size;
 }
@@ -124,6 +88,9 @@ void tcpSock::deal_with() {
     a->close();
     tcp->close();
     qInfo() << "over";
+    busy = false;
+    emit next();
+
 
 }
 
@@ -137,4 +104,8 @@ void tcpSock::nptBusy() {
         }
 
     }
+}
+
+bool tcpSock::isBusy() const {
+    return busy;
 }

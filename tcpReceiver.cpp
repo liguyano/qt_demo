@@ -13,15 +13,13 @@ tcpReceiver::tcpReceiver(QString FileName, QObject *parent) : QObject(parent) {
 void tcpReceiver::deal_mess() {
 
     auto a = rec->readAll();
-    //qInfo()<<a;
-    //qInfo()<<a.left(9);
     if (a.right(5) == "1Pack") {
         rec->write("OK");
         a = a.left(a.size() - 5);
     }
     if (a.right(3) == "end") {
         bytes.push_back(a.mid(0, a.size() - 3));
-        qInfo() << "end" << a;
+
         qInfo() << size_recv;
         save();
         auto add = rec->peerAddress();

@@ -24,6 +24,8 @@ public:
 
     bool busy = false;
 
+    bool isBusy() const;
+
 public slots:
 
     void deal_with();

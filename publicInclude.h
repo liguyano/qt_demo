@@ -22,7 +22,7 @@
 #include <QDateTime>
 #include <QFileDialog>
 #include <QPainter>
-#define C_STR(A) A.toStdString().c_str()
+#define C_STR(A) (A).toStdString().c_str()
 
 typedef QString qs;
 

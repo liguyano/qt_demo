@@ -296,10 +296,12 @@ void MainWindow::send_file() {
 
 void MainWindow::recv_file(QString fileName, QHostAddress add, qint64 size, QString dir) {
 //auto reciver=new tcpReceiver(add,fileName,this);
+
     auto pers = new QProgressBar(this);
     pers->setValue(0);
     receiver->fileName = fileName;
     receiver->size = size;
+
     receiver->pers = pers;
     receiver->conn(add, "./file_recv/" + dir);
     ui->perbars->addWidget(pers);
@@ -450,8 +452,48 @@ void MainWindow::send_dir() {
         return;
     }
     QString dir = QFileDialog::getExistingDirectory(this, tr("Open Directory"), us.read_info("user.fileOpenDir"),
-                                                    QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
+                                                    QFileDialog::DontResolveSymlinks);
+    QList<int> floor;
+    auto dirs = new QStringList();
+    dirs->append(dir);
+    floor.append(1);
+    while (dirs->size()) {
+        dir = dirs->at(0);
+        QString tPath = "";
+        auto paths = dir.split("/");
+
+        QString path;
+        //   printf_s("dir:: %s\n",C_STR(dir));
+        for (int i = paths.size() - floor[0]; i < paths.size(); ++i) {
+            path = path + paths[i] + "/";
+        }
+        //path : qt_Demo/cmake-build-release/.cmake/api/v1/
+        this->tcp->getUdpSock()->writeDatagram(C_STR(("CD" + path)), all_user[who], port);
+        QDir dir1(dir);
+        dir1.setFilter(QDir::AllDirs);
+        auto fl = dir1.entryList(QDir::AllDirs);
+        for (auto s: fl) {
+            if (s == "." || s == "..")
+                continue;
+            //printf_s("%s/%s\n",C_STR(dir),C_STR(s));
+            dirs->append(dir + "/" + s);
+            floor.append(floor[0] + 1);
+        }
+        dir1.setFilter(QDir::Files);
+        auto tfl = dir1.entryList(QDir::Files);
+        for (auto s: tfl) {
+            file_list.append(dir + "/" + s + "?" + path);
+        }
+        // QThread::sleep(100);
+        dirs->removeAt(0);
+        floor.removeAt(0);
+    }
+    if (!sock->busy)
+            emit sock->next();
+    delete dirs;
+/*    QThread::sleep(100);
     if (dir != "") {
+
         qInfo() << "line 451: " << dir;
         auto paths = dir.split("/");
         auto path = "CD" + paths[paths.size() - 1];
@@ -461,10 +503,11 @@ void MainWindow::send_dir() {
         QDir dir1(dir);
         dir1.setFilter(QDir::Files);
         file_list = dir1.entryList(QDir::Files);
+
         for (auto &ff: file_list)ff = dir + "/" + ff + "?" + path + "/";
         if (!sock->busy)emit sock->next();
-    }
-
+        delete dirs;
+    }*/
 }
 
 void MainWindow::nextFIle() {

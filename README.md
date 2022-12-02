@@ -35,3 +35,8 @@ if (itime==40)
 <www.bilibili.com>  
 [![nothing](/cmake-build-release/file_recv/37368798_p0.jpg)]
 
+## about the version 2.1
+
+we fineshed the file transport the file less than 1GB. And trans diractions.And file
+save path and the net port name of self computer can be change now. 
+

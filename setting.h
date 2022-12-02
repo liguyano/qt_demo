@@ -7,9 +7,7 @@
 #ifdef _DEBUG
 #include "cmake-build-debug/ui_setting.h"
 #else
-
 #include "cmake-build-release/ui_setting.h"
-
 # endif
 #ifndef QT_DEMO_SETTING_H
 #define QT_DEMO_SETTING_H

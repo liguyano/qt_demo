@@ -33,6 +33,8 @@ signals:
 
     void file_persent(QHostAddress add, qint32 persent, int speed);
 
+    void persent(qint32 pers);
+
 public slots:
 
     void deal_mess();

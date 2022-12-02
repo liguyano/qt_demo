@@ -1,4 +1,12 @@
+
+#ifdef _DEBUG
+#include "cmake-build-debug//ui_selfInfo.h"
+#else
+
 #include "cmake-build-release/ui_selfInfo.h"
+
+# endif
+
 
 #ifndef QT_DEMO_INFODIALOG_H
 #define QT_DEMO_INFODIALOG_H

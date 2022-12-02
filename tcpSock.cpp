@@ -40,11 +40,7 @@ void tcpSock::SendFile(QTcpSocket *a, QString fileName) {
     int starPOint = 0;
     QByteArray bbb /* =QByteArray::fromRawData((char *) fpr, MB1)*/;
     auto persize = fileInfo.size() / MB1;
-    // a->write(bbb);
-    //starPOint = file.size() < MB1 ? 0 : MB1;
     while ((starPOint + MB1) < file.size()) {
-
-
         qInfo() << ++Send << "MB";
         fpr = file.map(starPOint, MB1);
         starPOint += MB1;

@@ -50,6 +50,9 @@ public:
     ~MainWindow();
 
 public slots:
+
+    void persent_change(qint32 pers);
+
     void port_change(qint32 port);
 
     void open_self_info(bool a);

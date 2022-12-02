@@ -15,13 +15,13 @@ find_package(Qt5 COMPONENTS
         Widgets
         Network
         REQUIRED
-
         )
 set(LINK_DIR ./lib)
 link_directories(${LINK_DIR})
+
+
 QT5_WRAP_UI(project_FORMS_HEADERS selfInfo.ui setting.ui)
 QT5_ADD_RESOURCES(project_RESOURCE_CPPS selfInfo.qrc setting.qrc)
-
 set(public_include ${CMAKE_CURRENT_SOURCE_DIR}/cmake-build-debug/qt_Demo_autogen/include/)
 # 拷贝 main.cpp 到 public_include 中
 execute_process(COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/cmake-build-release/ui_setting.h ${public_include})

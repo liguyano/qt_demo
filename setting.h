@@ -3,6 +3,14 @@
 //
 #include "publicInclude.h"
 #include "userInfo.h"
+
+#ifdef _DEBUG
+#include "cmake-build-debug/ui_setting.h"
+#else
+
+#include "cmake-build-release/ui_setting.h"
+
+# endif
 #ifndef QT_DEMO_SETTING_H
 #define QT_DEMO_SETTING_H
 
@@ -23,6 +31,8 @@ signals:
 public slots:
 
     void saveTheName();
+
+    void save_path_btn();
 
 public:
 

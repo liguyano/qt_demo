@@ -68,6 +68,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(tcp, SIGNAL(creat_dir(QString)), this, SLOT(creatDir(QString)));
     connect(ui->dir_send, SIGNAL(clicked(bool)), this, SLOT(send_dir()));
     connect(sock, SIGNAL(next()), this, SLOT(nextFIle()));
+    connect(receiver, SIGNAL(persent(qint32)), this, SLOT(persent_change(qint32)));
 }
 
 MainWindow::~MainWindow() {
@@ -82,6 +83,7 @@ MainWindow::~MainWindow() {
         for (auto mess: messages[i]) {
             auto a = mess.toUtf8();
             tmp.write(a, a.length());
+            tmp.write("\n", 1);
         }
     }
     delete ui;
@@ -95,14 +97,14 @@ void MainWindow::btn_clicked() {
     if (ui->lineEdit->text().size() > 0) {
         tcp->getUdpSock()->writeDatagram(me, all_user[who], this->port);
         QDateTime curDateTime = QDateTime::currentDateTime();
-        QString str = "<div style=\" text-align:right\">";
+/*        QString str = "<div style=\" text-align:right\">";
         //    ui->textBrowser->setAlignment(Qt::AlignRight);
         str += "<font color ='black' size=3 >" + curDateTime.toString("hh:mm:ss") + "</font><br/>";
         str += "<font color ='black' style=\" background-color:rgba(230, 200, 200, 0.96);\" size=6>";
-//        ui->textBrowser->insertHtml("<span style= font-size:xx-large; color:#ff0000;align:left; >ME: fds</span\n"
-//                                    ">");
+
         str += ui->lineEdit->text() + "</font><div/>";
-        messages[who].push_back(str);
+        messages[who].push_back(str);*/
+        messages[who].push_back("SM:" + ui->lineEdit->text() + ":" + curDateTime.toString("hh:mm:ss"));
         buttons[who]->click();
         //  qInfo()<<ui->textBrowser->toHtml();
         ui->lineEdit->clear();
@@ -191,7 +193,11 @@ void MainWindow::regist_one(QHostAddress add) {
     QStringList mes;
     record.open(QIODevice::ReadOnly);
     if (record.exists()) {
-        mes.push_back(record.readAll());
+        while (!record.atEnd()) {
+            mes.append(record.readLine());
+            mes[mes.size() - 1] = mes[mes.size() - 1].replace('\n', "");
+            //printf_s("%s\n", C_STR(mes[mes.size()-1]));
+        }
     }
     record.close();
     tcp->getUdpSock()->writeDatagram("IM", add, this->port);
@@ -213,10 +219,54 @@ void MainWindow::regist_one(QHostAddress add) {
 void MainWindow::usr_ben_clicked() {
     auto btn = qobject_cast<QPushButton *>(QObject::sender());
     auto id = btn->property("id").value<int>();
+    //  auto cc=ui->textBrowser->cursor();
     ui->textBrowser->clear();
     QString str1 = "";
+
     for (const auto &str: messages[id]) {
-        str1 += str;
+        auto mess = str.split(":");
+        auto command = mess[0];
+        QString str2;
+        if (command == "SM") {
+            str2 = "<div style=\" text-align:right\">";
+            //    ui->textBrowser->setAlignment(Qt::AlignRight);
+            str2 += "<font color ='black' size=3 >" + mess[mess.size() - 3] + ":" + mess[mess.size() - 2] + ":" +
+                    mess[mess.size() - 1] + "</font><br/>";
+            str2 += "<font color ='black' style=\" background-color:rgba(230, 200, 200, 0.96);\" size=6>";
+            QString tmpmess;//SM:mee::s::ss::1:2:2;
+            for (int i = 1; i < mess.size() - 4; ++i) {
+                str2 += mess[i] + ":";
+            }
+            str2 += mess[mess.size() - 4];
+            str2 += +"</font><div/>";
+        }
+        if (command == "M") {
+            str2 = "<div style=\" text-align:left\">";
+            //    ui->textBrowser->setAlignment(Qt::AlignRight);
+            str2 += "<font color ='black' size=3 >" + mess[mess.size() - 3] + ":" + mess[mess.size() - 2] + ":" +
+                    mess[mess.size() - 1] + "</font><br/>";
+            str2 += "<font color ='black' style=\" background-color: #c2bdbd;\" size=6>";
+            QString tmpmess;//SM:mee::s::ss::1:2:2;
+            for (int i = 1; i < mess.size() - 4; ++i) {
+                str2 += mess[i] + ":";
+            }
+            str2 += mess[mess.size() - 4];
+            str2 += +"</font><div/>";
+        }
+        if (command == "PERSENT") {//<img filename= "a.png" src="a.png" width="001" height="28" alt="404"  />
+            str2 += "<div style=\" text-align:" + mess[2] + "\">";
+            str2 += "<img filename= \"a.png\" src=\"a.png\" width=\"" + mess[1] +
+                    "\" height=\"28\" alt=\"404\"  />";
+            str2 += "<font color='black' size=5>" + mess[1] + "%</font>";
+            str2 + "</div>";
+        }
+        if (command == "D") {
+            for (int i = 1; i < mess.size() - 1; ++i) {
+                str2 += (mess[i] + ":");
+            }
+            str2 += mess[mess.size() - 1];
+        }
+        str1 += str2;
     }
     ui->textBrowser->append(str1);
     who = id;
@@ -228,12 +278,12 @@ void MainWindow::add_message(const QString &message, const QHostAddress &add) {
     int i = 0;
     for (const auto &s: all_user) {
         if (s.isEqual(add)) {
-            //    ui->textBrowser->setAlignment(Qt::AlignLeft);
             QDateTime curDateTime = QDateTime::currentDateTime();
-            messages[i].push_back("<div style=\" text-align:left; \"><font color ='black' size=3>" +
-                                          curDateTime.toString("hh:mm:ss") + "</font><br/>");
-            messages[i].push_back(
-                    "<font color ='black' size=6 style=\"  background-color: #c2bdbd;\">" + message + "</font><div/>");
+            messages[i].push_back("M:" + message + ":" + curDateTime.toString("hh:mm:ss"));
+            // messages[i].push_back("<div style=\" text-align:left; \"><font color ='black' size=3>" +
+            //                             curDateTime.toString("hh:mm:ss") + "</font><br/>");
+            /*  messages[i].push_back(
+                      "<font color ='black' size=6 style=\"  background-color: #c2bdbd;\">" + message + "</font><div/>");*/
             if (i == who) {
                 //ui->textBrowser->append("<div align=left><font color ='black' size=3>"+curDateTime.toString("hh:mm:ss")+"</font><br/>"+"<font color ='green' size=10>"+message+"</font><div/></br>");
                 buttons[who]->click();
@@ -299,11 +349,16 @@ void MainWindow::recv_file(QString fileName, QHostAddress add, qint64 size, QStr
 
     auto pers = new QProgressBar(this);
     pers->setValue(0);
+    messages[who].append("PERSENT:0:left");
     receiver->fileName = fileName;
+    receiver->setProperty("who", who);
+    receiver->setProperty("id", messages[who].size() - 1);
+    receiver->setProperty("align", "left");
     receiver->size = size;
-
+    userInfo us;
+    us.lood("./setting/option.xml");
     receiver->pers = pers;
-    receiver->conn(add, "./file_recv/" + dir);
+    receiver->conn(add, us.read_info("user.fileSavePath") + dir);
     ui->perbars->addWidget(pers);
     auto la = new QLabel(fileName + "\nfrom " + add.toString());
     ui->perbars->addWidget(la);
@@ -441,7 +496,9 @@ QString createMultipleFolders(const QString path) {
 
 void MainWindow::creatDir(QString path) {
     qInfo() << path << endl;
-    createMultipleFolders("./file_recv/" + path);
+    userInfo us;
+    us.lood("./setting/option.xml");
+    createMultipleFolders(us.read_info("user.fileSavePath") + path);
 }
 
 void MainWindow::send_dir() {
@@ -491,23 +548,6 @@ void MainWindow::send_dir() {
     if (!sock->busy)
             emit sock->next();
     delete dirs;
-/*    QThread::sleep(100);
-    if (dir != "") {
-
-        qInfo() << "line 451: " << dir;
-        auto paths = dir.split("/");
-        auto path = "CD" + paths[paths.size() - 1];
-        this->tcp->getUdpSock()->writeDatagram(path.toStdString().c_str(), all_user[who], port);
-        path = paths[paths.size() - 1];
-        file_path_tmp = path + "/";
-        QDir dir1(dir);
-        dir1.setFilter(QDir::Files);
-        file_list = dir1.entryList(QDir::Files);
-
-        for (auto &ff: file_list)ff = dir + "/" + ff + "?" + path + "/";
-        if (!sock->busy)emit sock->next();
-        delete dirs;
-    }*/
 }
 
 void MainWindow::nextFIle() {
@@ -517,6 +557,14 @@ void MainWindow::nextFIle() {
         file_list.removeAt(0);
     } else {
 
+    }
+}
+
+void MainWindow::persent_change(int pers) {
+    messages[receiver->property("who").toInt()][receiver->property("id").toInt()] = "PERSENT:" + QString::number(pers)
+                                                                                    + ":left";
+    if (receiver->property("who").toInt() == who) {
+        buttons[who]->click();
     }
 }
 

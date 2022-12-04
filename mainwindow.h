@@ -10,6 +10,7 @@
 #include "tcpReceiver.h"
 #include "InfoDialog.h"
 #include "setting.h"
+#include "paintWidget.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -86,6 +87,8 @@ public slots:
     void creatDir(QString path);
 
     void nextFIle();
+
+    void handWrite_click();
 
 
 private:

@@ -69,6 +69,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->dir_send, SIGNAL(clicked(bool)), this, SLOT(send_dir()));
     connect(sock, SIGNAL(next()), this, SLOT(nextFIle()));
     connect(receiver, SIGNAL(persent(qint32)), this, SLOT(persent_change(qint32)));
+    connect(ui->handWrite, SIGNAL(clicked(bool)), this, SLOT(handWrite_click()));
 }
 
 MainWindow::~MainWindow() {
@@ -504,10 +505,10 @@ void MainWindow::creatDir(QString path) {
 void MainWindow::send_dir() {
     userInfo us;
     us.lood("./setting/option.xml");
-    if (file_list.size() > 0) {
+/*    if (file_list.size() > 0) {
         QMessageBox::critical(this, tr("warning"), tr("请等待文件夹传输完成"));
         return;
-    }
+    }*/
     QString dir = QFileDialog::getExistingDirectory(this, tr("Open Directory"), us.read_info("user.fileOpenDir"),
                                                     QFileDialog::DontResolveSymlinks);
     QList<int> floor;
@@ -566,6 +567,12 @@ void MainWindow::persent_change(int pers) {
     if (receiver->property("who").toInt() == who) {
         buttons[who]->click();
     }
+}
+
+void MainWindow::handWrite_click() {
+    auto h = new paintWidget(this);
+    h->show();
+
 }
 
 

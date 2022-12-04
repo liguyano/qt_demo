@@ -37,7 +37,7 @@ void tcpSock::SendFile(QTcpSocket *a, QString fileName) {
     file.open(QIODevice::ReadOnly);
 
     uchar *fpr = file.map(0, MB1);
-    int starPOint = 0;
+    long long starPOint = 0;
     QByteArray bbb /* =QByteArray::fromRawData((char *) fpr, MB1)*/;
     auto persize = fileInfo.size() / MB1;
     while ((starPOint + MB1) < file.size()) {
@@ -56,6 +56,7 @@ void tcpSock::SendFile(QTcpSocket *a, QString fileName) {
     bbb = QByteArray::fromRawData((char *) fpr, file.size() - starPOint);
     a->write(bbb);
     qInfo() << ++Send;
+    qInfo() << starPOint;
     //delete fpr;
     pers->setValue(100);
     file.unmap(fpr);

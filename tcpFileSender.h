@@ -2,8 +2,8 @@
 // Created by kurum on 2022/06/11.
 //
 
-#ifndef QT_DEMO_TCPSOCK_H
-#define QT_DEMO_TCPSOCK_H
+#ifndef QT_DEMO_TCPFILESENDER_H
+#define QT_DEMO_TCPFILESENDER_H
 
 #include "publicInclude.h"
 
@@ -42,4 +42,4 @@ signals:
 };
 
 
-#endif //QT_DEMO_TCPSOCK_H
+#endif //QT_DEMO_TCPFILESENDER_H

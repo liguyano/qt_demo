@@ -2,7 +2,7 @@
 // Created by kurum on 2022/06/11.
 //
 
-#include "tcpSock.h"
+#include "tcpFileSender.h"
 
 #include <utility>
 

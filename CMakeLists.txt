@@ -33,8 +33,8 @@ execute_process(COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/cma
 execute_process(COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/cmake-build-release/ui_selfInfo.h ${public_include})
 message("copy succed")
 
-add_executable(qt_Demo main.cpp mainwindow.cpp Q_person.cpp Q_person.h udpListening.cpp udpListening.h tcpSock.cpp
-        tcpSock.h tcpReceiver.cpp tcpReceiver.h userInfo.cpp userInfo.h setting.cpp setting.h
+add_executable(qt_Demo main.cpp mainwindow.cpp Q_person.cpp Q_person.h udpListening.cpp udpListening.h tcpFileSender.cpp
+        tcpFileSender.h tcpReceiver.cpp tcpReceiver.h userInfo.cpp userInfo.h setting.cpp setting.h
         ${project_FORMS_HEADERS}
         InfoDialog.cpp InfoDialog.h paintWidget.cpp paintWidget.h PaintGracy.cpp PaintGracy.h)
 add_executable(test modelTest.cpp)

@@ -4,7 +4,7 @@
 #include "publicInclude.h"
 #include "Q_person.h"
 #include "udpListening.h"
-#include "tcpSock.h"
+#include "tcpFileSender.h"
 #include <QDir>
 #include <thread>
 #include "tcpReceiver.h"

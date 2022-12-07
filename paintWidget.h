@@ -14,6 +14,10 @@
 #include "cmake-build-release/ui_paintWidget.h"
 
 # endif
+
+#include "PaintGracy.h"
+#include <QGraphicsItem>
+
 QT_BEGIN_NAMESPACE
 namespace Ui { class paintWIdget; }
 QT_END_NAMESPACE
@@ -23,10 +27,24 @@ Q_OBJECT
 public:
     explicit paintWidget(QWidget *parent = nullptr);
 
+    ~paintWidget();
+
+    PaintGracy *paintArea;
+
     void paintEvent(QPaintEvent *event) override;
 
+    void mouseMoveEvent(QMouseEvent *event) override;
+
+    void mousePressEvent(QMouseEvent *event) override;
+
+public slots:
+
+    void mouse_move(QPoint point);
+
 private:
+    QGraphicsScene *scene;
     Ui::paintWIdget *ui;
+
 };
 
 

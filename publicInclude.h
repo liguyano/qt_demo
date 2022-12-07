@@ -20,6 +20,7 @@
 #include <QTextBrowser>
 #include <QTextDocument>
 #include <QDateTime>
+#include <QMouseEvent>
 #include <QFileDialog>
 #include <QPainter>
 #define C_STR(A) (A).toStdString().c_str()

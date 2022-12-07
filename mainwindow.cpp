@@ -197,7 +197,7 @@ void MainWindow::regist_one(QHostAddress add) {
         while (!record.atEnd()) {
             mes.append(record.readLine());
             mes[mes.size() - 1] = mes[mes.size() - 1].replace('\n', "");
-            //printf_s("%s\n", C_STR(mes[mes.size()-1]));
+          //  printf_s("%s\n", C_STR(mes[mes.size()-1]));
         }
     }
     record.close();
@@ -224,7 +224,7 @@ void MainWindow::usr_ben_clicked() {
     ui->textBrowser->clear();
     QString str1 = "";
 
-    for (const auto &str: messages[id]) {
+    for (auto &str: messages[id]) {
         auto mess = str.split(":");
         auto command = mess[0];
         QString str2;
@@ -240,8 +240,8 @@ void MainWindow::usr_ben_clicked() {
             }
             str2 += mess[mess.size() - 4];
             str2 += +"</font><div/>";
-        }
-        if (command == "M") {
+            str = "D:" + str2;
+        } else if (command == "M") {
             str2 = "<div style=\" text-align:left\">";
             //    ui->textBrowser->setAlignment(Qt::AlignRight);
             str2 += "<font color ='black' size=3 >" + mess[mess.size() - 3] + ":" + mess[mess.size() - 2] + ":" +
@@ -253,19 +253,20 @@ void MainWindow::usr_ben_clicked() {
             }
             str2 += mess[mess.size() - 4];
             str2 += +"</font><div/>";
-        }
-        if (command == "PERSENT") {//<img filename= "a.png" src="a.png" width="001" height="28" alt="404"  />
+            str = str2;
+        } else if (command == "PERSENT") {//<img filename= "a.png" src="a.png" width="001" height="28" alt="404"  />
             str2 += "<div style=\" text-align:" + mess[2] + "\">";
             str2 += "<img filename= \"a.png\" src=\"a.png\" width=\"" + mess[1] +
                     "\" height=\"28\" alt=\"404\"  />";
             str2 += "<font color='black' size=5>" + mess[1] + "%</font>";
             str2 + "</div>";
-        }
-        if (command == "D") {
-            for (int i = 1; i < mess.size() - 1; ++i) {
-                str2 += (mess[i] + ":");
-            }
-            str2 += mess[mess.size() - 1];
+            if (mess[1].toInt() >= 100)
+                str = str2;
+        } else if (command == "D") {
+            str2 = str.right(str.size() - 2);
+            str = str2;
+        } else {
+            str2 = str;
         }
         str1 += str2;
     }
@@ -511,6 +512,8 @@ void MainWindow::send_dir() {
     }*/
     QString dir = QFileDialog::getExistingDirectory(this, tr("Open Directory"), us.read_info("user.fileOpenDir"),
                                                     QFileDialog::DontResolveSymlinks);
+    //printf_s("dir: %s\n",dir.toStdString().c_str());
+    if (dir == "")return;
     QList<int> floor;
     auto dirs = new QStringList();
     dirs->append(dir);
@@ -573,6 +576,11 @@ void MainWindow::handWrite_click() {
     auto h = new paintWidget(this);
     h->show();
 
+}
+
+void MainWindow::mousePressEvent(QMouseEvent *event) {
+
+    ui->groupBox->hide();
 }
 
 

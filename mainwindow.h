@@ -25,6 +25,7 @@ public:
 
     MainWindow(QWidget *parent = nullptr);
 
+    void mousePressEvent(QMouseEvent *event) override;
     QList<QHostAddress> all_ip;
     QList<QHostAddress> all_user;
     QList<QStringList> messages;

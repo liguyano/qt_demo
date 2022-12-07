@@ -68,17 +68,17 @@
        <number>9</number>
       </property>
       <item>
-       <widget class="QLabel" name="label">
-        <property name="focusPolicy">
-         <enum>Qt::NoFocus</enum>
-        </property>
-           <property name="layoutDirection">
-               <enum>Qt::LeftToRight</enum>
-           </property>
-           <property name="text">
-               <string>没有人连接</string>
-           </property>
-       </widget>
+          <widget class="QLabel" name="label">
+              <property name="focusPolicy">
+                  <enum>Qt::NoFocus</enum>
+              </property>
+              <property name="layoutDirection">
+                  <enum>Qt::LeftToRight</enum>
+              </property>
+              <property name="text">
+                  <string>没有人连接</string>
+              </property>
+          </widget>
       </item>
      </layout>
     </widget>
@@ -225,26 +225,26 @@
                <string>___</string>
            </property>
        </widget>
+       <zorder>textBrowser</zorder>
        <zorder>showGroup</zorder>
        <zorder>layoutWidget</zorder>
-       <zorder>textBrowser</zorder>
        <zorder>lineEdit</zorder>
        <zorder>verticalLayoutWidget</zorder>
        <zorder>label_3</zorder>
        <zorder>myName</zorder>
        <zorder>groupBox</zorder>
    </widget>
-   <widget class="QWidget" name="verticalLayoutWidget_2">
-       <property name="geometry">
-           <rect>
-               <x>760</x>
-               <y>40</y>
-               <width>211</width>
-               <height>461</height>
-           </rect>
-       </property>
-       <layout class="QVBoxLayout" name="perbars"/>
-   </widget>
+      <widget class="QWidget" name="verticalLayoutWidget_2">
+          <property name="geometry">
+              <rect>
+                  <x>760</x>
+                  <y>40</y>
+                  <width>211</width>
+                  <height>461</height>
+              </rect>
+          </property>
+          <layout class="QVBoxLayout" name="perbars"/>
+      </widget>
   </widget>
      <widget class="QMenuBar" name="menubar">
          <property name="geometry">
@@ -356,6 +356,38 @@
                 <hint type="sourcelabel">
                     <x>300</x>
                     <y>389</y>
+                </hint>
+                <hint type="destinationlabel">
+                    <x>299</x>
+                    <y>441</y>
+                </hint>
+            </hints>
+        </connection>
+        <connection>
+            <sender>textBrowser</sender>
+            <signal>selectionChanged()</signal>
+            <receiver>groupBox</receiver>
+            <slot>hide()</slot>
+            <hints>
+                <hint type="sourcelabel">
+                    <x>500</x>
+                    <y>266</y>
+                </hint>
+                <hint type="destinationlabel">
+                    <x>299</x>
+                    <y>441</y>
+                </hint>
+            </hints>
+        </connection>
+        <connection>
+            <sender>lineEdit</sender>
+            <signal>selectionChanged()</signal>
+            <receiver>groupBox</receiver>
+            <slot>hide()</slot>
+            <hints>
+                <hint type="sourcelabel">
+                    <x>460</x>
+                    <y>501</y>
                 </hint>
                 <hint type="destinationlabel">
                     <x>299</x>

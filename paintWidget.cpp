@@ -2,13 +2,30 @@
 // Created by kurum on 12/4/2022.
 //
 
+#include <QHBoxLayout>
+#include <QLabel>
 #include "paintWidget.h"
 
 paintWidget::paintWidget(QWidget *parent) : QWidget(parent), ui(new Ui::paintWIdget) {
     ui->setupUi(this);
     this->setAttribute(Qt::WA_DeleteOnClose);
     this->setWindowFlag(Qt::Window, true);
+
+    /*
+     *         paintArea = new QGraphicsView(paintWIdget);
+        paintArea->setObjectName(QString::fromUtf8("paintArea"));
+        paintArea->setGeometry(QRect(0, 40, 551, 381));
+        */
+    paintArea = new PaintGracy(this);
+    paintArea->setObjectName(QString::fromUtf8("paintArea"));
+    paintArea->setGeometry(QRect(0, 40, 551, 381));
+    paintArea->setCursor(Qt::CrossCursor);
+    paintArea->setDragMode(QGraphicsView::RubberBandDrag);
+    connect(paintArea, SIGNAL(mouse_move(QPoint)), this, SLOT(mouse_move(QPoint)));
+    scene = new QGraphicsScene(QRect(-200, -100, 400, 200));
+    paintArea->setScene(scene);
 }
+
 
 void paintWidget::paintEvent(QPaintEvent *event) {
     QWidget::paintEvent(event);
@@ -30,4 +47,32 @@ void paintWidget::paintEvent(QPaintEvent *event) {
     brush.setStyle(Qt::SolidPattern);
     painter.setBrush(brush);
     painter.drawRect(rect1);
+}
+
+void paintWidget::mouse_move(QPoint point) {
+//qInfo()<<point.x()<<" "<<point.y();
+    QGraphicsRectItem *item = new QGraphicsRectItem(QRect(-290, -200, 4, 2)); //矩形框正好等于scene的大小
+    item->setFlags(QGraphicsItem::ItemIsSelectable     //可选，可以有焦点，但是不能移动
+                   | QGraphicsItem::ItemIsFocusable);
+    QPen pen;
+    pen.setWidth(2);
+    item->setPen(pen);
+    item->setPos(point.x(), point.y());//缺省位置在scene的（0,0）
+    scene->addItem(item);
+    //  scene->clearSelection();
+}
+
+void paintWidget::mouseMoveEvent(QMouseEvent *event) {
+
+}
+
+void paintWidget::mousePressEvent(QMouseEvent *event) {
+    if (event->button() == Qt::LeftButton) {
+        // qInfo()<<"sss";
+    }
+}
+
+paintWidget::~paintWidget() {
+    QPixmap pix = paintArea->grab();
+    pix.save("../a.png");
 }

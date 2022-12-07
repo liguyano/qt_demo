@@ -36,7 +36,7 @@ message("copy succed")
 add_executable(qt_Demo main.cpp mainwindow.cpp Q_person.cpp Q_person.h tcpListening.cpp tcpListening.h tcpSock.cpp
         tcpSock.h tcpReceiver.cpp tcpReceiver.h userInfo.cpp userInfo.h setting.cpp setting.h
         ${project_FORMS_HEADERS}
-        InfoDialog.cpp InfoDialog.h paintWidget.cpp paintWidget.h)
+        InfoDialog.cpp InfoDialog.h paintWidget.cpp paintWidget.h PaintGracy.cpp PaintGracy.h)
 add_executable(test modelTest.cpp)
 add_library(xml tinyxml/tinyxml.cpp tinyxml/tinystr.cpp tinyxml/tinyxmlerror.cpp tinyxml/tinyxmlparser.cpp)
 

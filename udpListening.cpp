@@ -2,9 +2,9 @@
 // Created by kurum on 2022/06/01.
 //
 
-#include "tcpListening.h"
+#include "udpListening.h"
 
-[[noreturn]] void tcpListening::run() {
+[[noreturn]] void udpListening::run() {
     /* int itime=0;
      while (true)
      {
@@ -22,7 +22,7 @@
 }
 
 
-tcpListening::tcpListening(int port) {
+udpListening::udpListening(int port) {
     this->udpSock = new QUdpSocket;
     udpSock->bind(port);
     this->setProperty("times", 0);
@@ -30,7 +30,7 @@ tcpListening::tcpListening(int port) {
     connect(udpSock, SIGNAL(readyRead()), this, SLOT(processData()));
 }
 
-void tcpListening::processData() {
+void udpListening::processData() {
     QString strData;
 
     while (udpSock->hasPendingDatagrams()) {
@@ -87,13 +87,13 @@ void tcpListening::processData() {
     }
 }
 
-tcpListening::tcpListening(QObject *parent, int port) : QThread(parent) {
+udpListening::udpListening(QObject *parent, int port) : QThread(parent) {
     this->udpSock = new QUdpSocket;
     udpSock->bind(port);
     printf_s("bind %d succeed\n", port);
     connect(udpSock, SIGNAL(readyRead()), this, SLOT(processData()));
 }
 
-QUdpSocket *tcpListening::getUdpSock() const {
+QUdpSocket *udpListening::getUdpSock() const {
     return udpSock;
 }

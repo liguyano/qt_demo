@@ -2,12 +2,12 @@
 // Created by kurum on 2022/06/01.
 //
 
-#ifndef QT_DEMO_TCPLISTENING_H
-#define QT_DEMO_TCPLISTENING_H
+#ifndef QT_DEMO_UDPLISTENING_H
+#define QT_DEMO_UDPLISTENING_H
 
 #include "publicInclude.h"
 
-class tcpListening : public QThread {
+class udpListening : public QThread {
 Q_OBJECT
 private:
     QUdpSocket *udpSock;
@@ -19,9 +19,9 @@ protected:
     [[noreturn]] void run() Q_DECL_OVERRIDE;
 
 public:
-    explicit tcpListening(QObject *parent = nullptr, int port = 7001);
+    explicit udpListening(QObject *parent = nullptr, int port = 7001);
 
-    tcpListening(int port = 7001);
+    udpListening(int port = 7001);
 
 public slots:
 
@@ -50,4 +50,4 @@ signals:
     void creat_dir(QString path);
 };
 
-#endif //QT_DEMO_TCPLISTENING_H
+#endif //QT_DEMO_UDPLISTENING_H

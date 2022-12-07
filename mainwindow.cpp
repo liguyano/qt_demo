@@ -45,7 +45,7 @@ MainWindow::MainWindow(QWidget *parent)
     getAllip();
     qInfo() << all_ip.size();
     // qInfo()<<all_ip->at(1).toString();
-    tcp = new tcpListening(this, port);
+    tcp = new udpListening(this, port);
     tcp->setProperty("port", port);
     tcp->start();
     sock = new tcpSock("s.txt", this);

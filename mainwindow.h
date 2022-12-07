@@ -3,7 +3,7 @@
 
 #include "publicInclude.h"
 #include "Q_person.h"
-#include "tcpListening.h"
+#include "udpListening.h"
 #include "tcpSock.h"
 #include <QDir>
 #include <thread>
@@ -43,7 +43,7 @@ public:
 
     void sent2All();
 
-    tcpListening *tcp;
+    udpListening *tcp;
     tcpSock *sock;
     tcpReceiver *receiver;
 

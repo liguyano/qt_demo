@@ -22,6 +22,7 @@ paintWidget::paintWidget(QWidget *parent) : QWidget(parent), ui(new Ui::paintWId
     paintArea->setCursor(Qt::CrossCursor);
     paintArea->setDragMode(QGraphicsView::RubberBandDrag);
     connect(paintArea, SIGNAL(mouse_move(QPoint)), this, SLOT(mouse_move(QPoint)));
+    connect(paintArea, SIGNAL(mouse_click(bool, QPoint)), this, SLOT(mouse_down(bool, QPoint)));
     scene = new QGraphicsScene(QRect(-200, -100, 400, 200));
     paintArea->setScene(scene);
 }
@@ -51,13 +52,16 @@ void paintWidget::paintEvent(QPaintEvent *event) {
 
 void paintWidget::mouse_move(QPoint point) {
 //qInfo()<<point.x()<<" "<<point.y();
-    QGraphicsRectItem *item = new QGraphicsRectItem(QRect(-290, -200, 4, 2)); //矩形框正好等于scene的大小
+    QGraphicsLineItem *item = new QGraphicsLineItem(); //矩形框正好等于scene的大小
     item->setFlags(QGraphicsItem::ItemIsSelectable     //可选，可以有焦点，但是不能移动
                    | QGraphicsItem::ItemIsFocusable);
+    item->setLine(lastPoint.x(), lastPoint.y(), point.x(), point.y());
     QPen pen;
+    lastPoint = point;
+    pen.setColor(Qt::red);
     pen.setWidth(2);
     item->setPen(pen);
-    item->setPos(point.x(), point.y());//缺省位置在scene的（0,0）
+    item->setPos(-275, -190);//缺省位置在scene的（0,0）
     scene->addItem(item);
     //  scene->clearSelection();
 }
@@ -69,10 +73,21 @@ void paintWidget::mouseMoveEvent(QMouseEvent *event) {
 void paintWidget::mousePressEvent(QMouseEvent *event) {
     if (event->button() == Qt::LeftButton) {
         // qInfo()<<"sss";
+        lastPoint = event->pos();
     }
 }
 
 paintWidget::~paintWidget() {
     QPixmap pix = paintArea->grab();
-    pix.save("../a.png");
+    pix.save("./a.png");
+}
+
+void paintWidget::mouseReleaseEvent(QMouseEvent *event) {
+
+}
+
+void paintWidget::mouse_down(bool isleft, QPoint where) {
+    if (isleft) {
+        lastPoint = where;
+    }
 }

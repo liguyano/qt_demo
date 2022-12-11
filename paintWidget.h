@@ -37,11 +37,16 @@ public:
 
     void mousePressEvent(QMouseEvent *event) override;
 
+    void mouseReleaseEvent(QMouseEvent *event) override;
+
 public slots:
 
     void mouse_move(QPoint point);
 
+    void mouse_down(bool isleft, QPoint where);
+
 private:
+    QPoint lastPoint = {0, 0};
     QGraphicsScene *scene;
     Ui::paintWIdget *ui;
 

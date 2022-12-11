@@ -6,7 +6,7 @@ set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOUIC ON)
 set(Qt5_DIR D:\\QT5\\5.12.9\\msvc2017_64\\lib\\cmake\\Qt5)
-#set(Qt5_DIR D:\\QT5\\5.12.9\\mingw73_64\\lib\\cmake\\Qt5)
+#set(Qt5_DIR D:\\QT5\\5.12.9\\mingw73_32\\lib\\cmake\\Qt5)
 
 
 find_package(Qt5 COMPONENTS
@@ -21,21 +21,12 @@ link_directories(${LINK_DIR})
 
 
 QT5_WRAP_UI(project_FORMS_HEADERS selfInfo.ui setting.ui paintWidget.ui)
-QT5_ADD_RESOURCES(project_RESOURCE_CPPS selfInfo.qrc setting.qrc paintWidget.qrc)
-set(public_include ${CMAKE_CURRENT_SOURCE_DIR}/cmake-build-debug/qt_Demo_autogen/include/)
-# 拷贝 main.cpp 到 public_include 中
-execute_process(COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/cmake-build-release/ui_setting.h ${public_include})
-execute_process(COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/cmake-build-release/ui_selfInfo.h ${public_include})
-message("copy succed")
-set(public_include ${CMAKE_CURRENT_SOURCE_DIR}/cmake-build-release/qt_Demo_autogen/include/)
-# 拷贝 main.cpp 到 public_include 中
-execute_process(COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/cmake-build-release/ui_setting.h ${public_include})
-execute_process(COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/cmake-build-release/ui_selfInfo.h ${public_include})
-message("copy succed")
+QT5_ADD_RESOURCES(project_RESOURCE_CPPS res.qrc)
 
 add_executable(qt_Demo main.cpp mainwindow.cpp Q_person.cpp Q_person.h udpListening.cpp udpListening.h tcpFileSender.cpp
         tcpFileSender.h tcpReceiver.cpp tcpReceiver.h userInfo.cpp userInfo.h setting.cpp setting.h
         ${project_FORMS_HEADERS}
+        ${project_RESOURCE_CPPS}
         InfoDialog.cpp InfoDialog.h paintWidget.cpp paintWidget.h PaintGracy.cpp PaintGracy.h)
 add_executable(test modelTest.cpp)
 add_library(xml tinyxml/tinyxml.cpp tinyxml/tinystr.cpp tinyxml/tinyxmlerror.cpp tinyxml/tinyxmlparser.cpp)

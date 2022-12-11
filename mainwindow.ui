@@ -63,24 +63,24 @@
        <height>411</height>
       </rect>
      </property>
-     <layout class="QVBoxLayout" name="users">
-      <property name="spacing">
-       <number>9</number>
-      </property>
-         <item>
-             <widget class="QLabel" name="label">
-                 <property name="focusPolicy">
-                     <enum>Qt::NoFocus</enum>
-                 </property>
-                 <property name="layoutDirection">
-                     <enum>Qt::LeftToRight</enum>
-                 </property>
-                 <property name="text">
-                     <string>没有人连接</string>
-                 </property>
-             </widget>
-         </item>
-     </layout>
+        <layout class="QVBoxLayout" name="users">
+            <property name="spacing">
+                <number>9</number>
+            </property>
+            <item>
+                <widget class="QLabel" name="label">
+                    <property name="focusPolicy">
+                        <enum>Qt::NoFocus</enum>
+                    </property>
+                    <property name="layoutDirection">
+                        <enum>Qt::LeftToRight</enum>
+                    </property>
+                    <property name="text">
+                        <string>没有人连接</string>
+                    </property>
+                </widget>
+            </item>
+        </layout>
     </widget>
        <widget class="QTextBrowser" name="textBrowser">
            <property name="geometry">
@@ -174,8 +174,14 @@
                    <height>191</height>
                </rect>
            </property>
+           <property name="styleSheet">
+               <string notr="true">background-color: rgba(143, 207, 255,100);</string>
+           </property>
+           <property name="inputMethodHints">
+               <set>Qt::ImhUrlCharactersOnly</set>
+           </property>
            <property name="title">
-               <string>GroupBox</string>
+               <string/>
            </property>
            <widget class="QPushButton" name="dir_send">
                <property name="geometry">

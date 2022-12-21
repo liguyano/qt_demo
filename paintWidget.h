@@ -4,6 +4,8 @@
 
 #ifndef QT_DEMO_PAINTWIDGET_H
 #define QT_DEMO_PAINTWIDGET_H
+#define STATUE_DRAW 1
+#define STATUE_SELECT 2
 
 #include "publicInclude.h"
 
@@ -45,7 +47,13 @@ public slots:
 
     void mouse_down(bool isleft, QPoint where);
 
+    void select_button_clicked(bool clicked);
+
+    void draw_button_clicked(bool clicked);
+
+
 private:
+    qint32 statue = STATUE_DRAW;
     QPoint lastPoint = {0, 0};
     QGraphicsScene *scene;
     Ui::paintWIdget *ui;

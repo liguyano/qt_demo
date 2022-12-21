@@ -23,6 +23,8 @@ paintWidget::paintWidget(QWidget *parent) : QWidget(parent), ui(new Ui::paintWId
     paintArea->setDragMode(QGraphicsView::RubberBandDrag);
     connect(paintArea, SIGNAL(mouse_move(QPoint)), this, SLOT(mouse_move(QPoint)));
     connect(paintArea, SIGNAL(mouse_click(bool, QPoint)), this, SLOT(mouse_down(bool, QPoint)));
+    connect(this->ui->pushButton_2, SIGNAL(clicked(bool)), this, SLOT(select_button_clicked(bool)));
+    connect(this->ui->draw_btn, SIGNAL(clicked(bool)), this, SLOT(draw_button_clicked(bool)));
     scene = new QGraphicsScene(QRect(-200, -100, 400, 200));
     paintArea->setScene(scene);
 }
@@ -51,18 +53,21 @@ void paintWidget::paintEvent(QPaintEvent *event) {
 }
 
 void paintWidget::mouse_move(QPoint point) {
+    if (statue == STATUE_DRAW) {
+        QGraphicsLineItem *item = new QGraphicsLineItem(); //矩形框正好等于scene的大小
+        item->setFlags(QGraphicsItem::ItemIsSelectable     //可选，可以有焦点，但是不能移动
+                       | QGraphicsItem::ItemIsFocusable);
+        item->setLine(lastPoint.x(), lastPoint.y(), point.x(), point.y());
+        QPen pen;
+        lastPoint = point;
+        pen.setColor(Qt::red);
+        pen.setWidth(2);
+        item->setPen(pen);
+        item->setPos(-275, -190);//缺省位置在scene的（0,0）
+        scene->addItem(item);
+    }
 //qInfo()<<point.x()<<" "<<point.y();
-    QGraphicsLineItem *item = new QGraphicsLineItem(); //矩形框正好等于scene的大小
-    item->setFlags(QGraphicsItem::ItemIsSelectable     //可选，可以有焦点，但是不能移动
-                   | QGraphicsItem::ItemIsFocusable);
-    item->setLine(lastPoint.x(), lastPoint.y(), point.x(), point.y());
-    QPen pen;
-    lastPoint = point;
-    pen.setColor(Qt::red);
-    pen.setWidth(2);
-    item->setPen(pen);
-    item->setPos(-275, -190);//缺省位置在scene的（0,0）
-    scene->addItem(item);
+
     //  scene->clearSelection();
 }
 
@@ -90,4 +95,12 @@ void paintWidget::mouse_down(bool isleft, QPoint where) {
     if (isleft) {
         lastPoint = where;
     }
+}
+
+void paintWidget::select_button_clicked(bool clicked) {
+    this->statue = STATUE_SELECT;
+}
+
+void paintWidget::draw_button_clicked(bool clicked) {
+    this->statue = STATUE_DRAW;
 }

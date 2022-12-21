@@ -226,9 +226,16 @@ void MainWindow::usr_ben_clicked() {
 
     for (auto &str: messages[id]) {
         auto mess = str.split(":");
+
         auto command = mess[0];
         QString str2;
         if (command == "SM") {
+            str = str.replace('<', "&lt;");
+            str = str.replace('>', "&gt;");
+            str = str.replace(' ', "&nbsp;");//printf_s("%s \n", C_STR(str));
+            str = str.replace('\n', "</br>");
+
+            mess = str.split(":");
             str2 = "<div style=\" text-align:right\">";
             //    ui->textBrowser->setAlignment(Qt::AlignRight);
             str2 += "<font color ='black' size=3 >" + mess[mess.size() - 3] + ":" + mess[mess.size() - 2] + ":" +
@@ -242,6 +249,13 @@ void MainWindow::usr_ben_clicked() {
             str2 += +"</font><div/>";
             str = "D:" + str2;
         } else if (command == "M") {
+
+            str = str.replace(' ', "&nbsp;");
+            //printf_s("%s \n", C_STR(str));
+            str = str.replace('<', "&lt;");
+            str = str.replace('>', "&gt;");
+            str = str.replace('\n', "</br>");
+            mess = str.split(":");
             str2 = "<div style=\" text-align:left\">";
             //    ui->textBrowser->setAlignment(Qt::AlignRight);
             str2 += "<font color ='black' size=3 >" + mess[mess.size() - 3] + ":" + mess[mess.size() - 2] + ":" +

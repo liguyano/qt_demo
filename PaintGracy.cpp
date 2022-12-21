@@ -6,7 +6,11 @@
 
 PaintGracy::PaintGracy(QWidget *parents) : QGraphicsView(parents) {
 
-
+    QSizePolicy sizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    sizePolicy.setHorizontalStretch(0);
+    sizePolicy.setVerticalStretch(0);
+    sizePolicy.setHeightForWidth(parents->sizePolicy().hasHeightForWidth());
+    this->setSizePolicy(sizePolicy);
 }
 
 void PaintGracy::mouseMoveEvent(QMouseEvent *event) {

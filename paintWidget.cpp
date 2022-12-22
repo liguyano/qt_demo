@@ -27,8 +27,10 @@ paintWidget::paintWidget(QWidget *parent) : QWidget(parent), ui(new Ui::paintWId
     connect(this->ui->pushButton_2, SIGNAL(clicked(bool)), this, SLOT(select_button_clicked(bool)));
     connect(this->ui->draw_btn, SIGNAL(clicked(bool)), this, SLOT(draw_button_clicked(bool)));
     connect(this->ui->color_selecter, SIGNAL(clicked(bool)), this, SLOT(color_button_clicked(bool)));
+    connect(this->ui->del_btn, SIGNAL(clicked(bool)), this, SLOT(del_button_clicked(bool)));
     scene = new QGraphicsScene(QRect(-200, -100, 400, 200));
     paintArea->setScene(scene);
+    draw_button_clicked(true);
 }
 
 
@@ -57,11 +59,16 @@ void paintWidget::paintEvent(QPaintEvent *event) {
 
 void paintWidget::mouse_move(QPoint point) {
     if (statue == STATUE_DRAW) {
+
+/*        if (abs(point.y()-lastPoint.y())>=35)
+        {  printf_s("%d ,%d  \n", point.x(), point.y());
+            qInfo()<<"err"<<abs(point.y()-lastPoint.y());
+           // lastPoint = l_lastPoint;
+        }*/
         QGraphicsLineItem *item = new QGraphicsLineItem(); //矩形框正好等于scene的大小
         item->setFlags(QGraphicsItem::ItemIsSelectable     //可选，可以有焦点，但是不能移动
                        | QGraphicsItem::ItemIsFocusable);
         item->setLine(lastPoint.x(), lastPoint.y(), point.x(), point.y());
-        printf_s("%d ,%d  \n", point.x(), point.y());
         QPen pen;
         lastPoint = point;
         pen.setColor(pen_brush_color);
@@ -70,6 +77,8 @@ void paintWidget::mouse_move(QPoint point) {
         item->setPos(-275, -190);//缺省位置在scene的（0,0）
         // item->setSelected(true);
         scene->addItem(item);
+
+
     }
 //qInfo()<<point.x()<<" "<<point.y();
 
@@ -83,7 +92,7 @@ void paintWidget::mouseMoveEvent(QMouseEvent *event) {
 void paintWidget::mousePressEvent(QMouseEvent *event) {
     if (event->button() == Qt::LeftButton) {
         // qInfo()<<"sss";
-        lastPoint = event->pos();
+        //lastPoint = event->pos();
     }
 }
 
@@ -99,6 +108,7 @@ void paintWidget::mouseReleaseEvent(QMouseEvent *event) {
 void paintWidget::mouse_down(bool isleft, QPoint where) {
     if (isleft) {
         lastPoint = where;
+
         mouse_move(where);
     }
 }
@@ -121,4 +131,10 @@ void paintWidget::draw_button_clicked(bool clicked) {
 void paintWidget::color_button_clicked(bool clicked) {
     pen_brush_color = QColorDialog::getColor(pen_brush_color, NULL, "选择填充颜色");
 
+}
+
+void paintWidget::del_button_clicked(bool clicked) {
+    for (auto *s: scene->selectedItems()) {
+        scene->removeItem(s);
+    }
 }

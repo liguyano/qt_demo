@@ -53,11 +53,14 @@ public slots:
 
     void color_button_clicked(bool clicked);
 
+    void del_button_clicked(bool clicked);
+
 
 private:
     qint32 statue = STATUE_DRAW;
     QColor pen_brush_color;
     QPoint lastPoint = {0, 0};
+    //QPoint l_lastPoint = {0, 0};
     QGraphicsScene *scene;
     Ui::paintWIdget *ui;
 

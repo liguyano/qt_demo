@@ -4,6 +4,7 @@
 
 #include <QHBoxLayout>
 #include <QLabel>
+#include <QColorDialog>
 #include "paintWidget.h"
 
 paintWidget::paintWidget(QWidget *parent) : QWidget(parent), ui(new Ui::paintWIdget) {
@@ -25,6 +26,7 @@ paintWidget::paintWidget(QWidget *parent) : QWidget(parent), ui(new Ui::paintWId
     connect(paintArea, SIGNAL(mouse_click(bool, QPoint)), this, SLOT(mouse_down(bool, QPoint)));
     connect(this->ui->pushButton_2, SIGNAL(clicked(bool)), this, SLOT(select_button_clicked(bool)));
     connect(this->ui->draw_btn, SIGNAL(clicked(bool)), this, SLOT(draw_button_clicked(bool)));
+    connect(this->ui->color_selecter, SIGNAL(clicked(bool)), this, SLOT(color_button_clicked(bool)));
     scene = new QGraphicsScene(QRect(-200, -100, 400, 200));
     paintArea->setScene(scene);
 }
@@ -50,6 +52,7 @@ void paintWidget::paintEvent(QPaintEvent *event) {
     brush.setStyle(Qt::SolidPattern);
     painter.setBrush(brush);
     painter.drawRect(rect1);
+
 }
 
 void paintWidget::mouse_move(QPoint point) {
@@ -60,10 +63,11 @@ void paintWidget::mouse_move(QPoint point) {
         item->setLine(lastPoint.x(), lastPoint.y(), point.x(), point.y());
         QPen pen;
         lastPoint = point;
-        pen.setColor(Qt::red);
+        pen.setColor(pen_brush_color);
         pen.setWidth(2);
         item->setPen(pen);
         item->setPos(-275, -190);//缺省位置在scene的（0,0）
+        item->setSelected(true);
         scene->addItem(item);
     }
 //qInfo()<<point.x()<<" "<<point.y();
@@ -99,8 +103,19 @@ void paintWidget::mouse_down(bool isleft, QPoint where) {
 
 void paintWidget::select_button_clicked(bool clicked) {
     this->statue = STATUE_SELECT;
+    paintArea->setMouseTracking(true);
+    paintArea->setDragMode(QGraphicsView::RubberBandDrag);
+    qInfo() << scene->selectedItems().count();
 }
 
 void paintWidget::draw_button_clicked(bool clicked) {
     this->statue = STATUE_DRAW;
+    paintArea->setMouseTracking(false);
+
+
+}
+
+void paintWidget::color_button_clicked(bool clicked) {
+    pen_brush_color = QColorDialog::getColor(pen_brush_color, NULL, "选择填充颜色");
+
 }

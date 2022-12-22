@@ -61,13 +61,14 @@ void paintWidget::mouse_move(QPoint point) {
         item->setFlags(QGraphicsItem::ItemIsSelectable     //可选，可以有焦点，但是不能移动
                        | QGraphicsItem::ItemIsFocusable);
         item->setLine(lastPoint.x(), lastPoint.y(), point.x(), point.y());
+        printf_s("%d ,%d  \n", point.x(), point.y());
         QPen pen;
         lastPoint = point;
         pen.setColor(pen_brush_color);
         pen.setWidth(2);
         item->setPen(pen);
         item->setPos(-275, -190);//缺省位置在scene的（0,0）
-        item->setSelected(true);
+        // item->setSelected(true);
         scene->addItem(item);
     }
 //qInfo()<<point.x()<<" "<<point.y();
@@ -98,6 +99,7 @@ void paintWidget::mouseReleaseEvent(QMouseEvent *event) {
 void paintWidget::mouse_down(bool isleft, QPoint where) {
     if (isleft) {
         lastPoint = where;
+        mouse_move(where);
     }
 }
 
@@ -110,6 +112,7 @@ void paintWidget::select_button_clicked(bool clicked) {
 
 void paintWidget::draw_button_clicked(bool clicked) {
     this->statue = STATUE_DRAW;
+    paintArea->setDragMode(QGraphicsView::NoDrag);
     paintArea->setMouseTracking(false);
 
 

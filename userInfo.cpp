@@ -49,7 +49,17 @@ bool userInfo::creatInitFile() {
                       "</data>");
         setData.close();
     }
-
+    QFile cssFIle("./setting/style.css");
+    if (!cssFIle.exists()) {
+        cssFIle.open(QIODevice::WriteOnly);
+        cssFIle.write("#10{text-align:left;background-color: #700070;}\n"
+                      ".sender{text-align:right;}\n"
+                      ".recvd{text-align:left;}\n"
+                      ".time{color: #4f1212;font-size: medium;}\n"
+                      ".send_text{color: black;background-color: rgba(230, 200, 200, 0.96);font-size: xx-large;}\n"
+                      ".recv_text{color: black;background-color: rgba(231, 225, 225, 0.96);font-size: xx-large;}");
+        cssFIle.close();
+    }
     return false;
 }
 // frindes.frined[name=haha].a

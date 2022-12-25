@@ -236,11 +236,11 @@ void MainWindow::usr_ben_clicked() {
             str = str.replace('\n', "</br>");
 
             mess = str.split(":");
-            str2 = "<div style=\" text-align:right\">";
+            str2 = "<div class=\"sender\">";
             //    ui->textBrowser->setAlignment(Qt::AlignRight);
-            str2 += "<font color ='black' size=3 >" + mess[mess.size() - 3] + ":" + mess[mess.size() - 2] + ":" +
+            str2 += "<font class=\"time\">" + mess[mess.size() - 3] + ":" + mess[mess.size() - 2] + ":" +
                     mess[mess.size() - 1] + "</font><br/>";
-            str2 += "<font color ='black' style=\" background-color:rgba(230, 200, 200, 0.96);\" size=6>";
+            str2 += "<font class=\"send_text\">";
             QString tmpmess;//SM:mee::s::ss::1:2:2;
             for (int i = 1; i < mess.size() - 4; ++i) {
                 str2 += mess[i] + ":";
@@ -256,11 +256,11 @@ void MainWindow::usr_ben_clicked() {
             str = str.replace('>', "&gt;");
             str = str.replace('\n', "</br>");
             mess = str.split(":");
-            str2 = "<div style=\" text-align:left\">";
+            str2 = "<div class=\" recvd\">";
             //    ui->textBrowser->setAlignment(Qt::AlignRight);
-            str2 += "<font color ='black' size=3 >" + mess[mess.size() - 3] + ":" + mess[mess.size() - 2] + ":" +
+            str2 += "<font class=\"time\">" + mess[mess.size() - 3] + ":" + mess[mess.size() - 2] + ":" +
                     mess[mess.size() - 1] + "</font><br/>";
-            str2 += "<font color ='black' style=\" background-color: #c2bdbd;\" size=6>";
+            str2 += "<font class=\"recv_text\">";
             QString tmpmess;//SM:mee::s::ss::1:2:2;
             for (int i = 1; i < mess.size() - 4; ++i) {
                 str2 += mess[i] + ":";

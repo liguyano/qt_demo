@@ -38,5 +38,10 @@ if (itime==40)
 ## about the version 2.1
 
 we fineshed the file transport the file less than 1GB. And trans diractions.And file
-save path and the net port name of self computer can be change now. 
+save path and the net port name of self computer can be change now.
+
+## about the version 2.2
+
+we can use a css file to control to the test style now.
+> &lt;link rel="stylesheet" type="text/css" href="./setting/style.css">
 

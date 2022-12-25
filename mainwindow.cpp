@@ -221,8 +221,7 @@ void MainWindow::usr_ben_clicked() {
     auto id = btn->property("id").value<int>();
     //  auto cc=ui->textBrowser->cursor();
     ui->textBrowser->clear();
-    QString str1 = "";
-
+    QString str1 = R"(<link rel="stylesheet" type="text/css" href="./setting/style.css" />)";
     for (auto &str: messages[id]) {
         auto mess = str.split(":");
 

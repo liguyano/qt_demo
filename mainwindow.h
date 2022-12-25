@@ -33,8 +33,6 @@ public:
     QMap<QString, QString> ip_name_map;
     QMap<QString, QString> options;
 
-    void changImgWidth(QString &origin, qint32 width);
-
     int who = 0;
 
     void paintEvent(QPaintEvent *event) Q_DECL_OVERRIDE;

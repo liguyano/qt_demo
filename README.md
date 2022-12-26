@@ -43,5 +43,5 @@ save path and the net port name of self computer can be change now.
 ## about the version 2.2
 
 we can use a css file to control to the test style now.
-> &lt;link rel="stylesheet" type="text/css" href="./setting/style.css">
+> &lt;link rel="stylesheet" type="text/css" href="./setting/style.css"&gt;
 

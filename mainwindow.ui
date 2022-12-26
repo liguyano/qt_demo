@@ -54,34 +54,34 @@
       <string>please hear</string>
      </property>
     </widget>
-    <widget class="QWidget" name="verticalLayoutWidget">
-     <property name="geometry">
-      <rect>
-       <x>30</x>
-       <y>40</y>
-       <width>211</width>
-       <height>411</height>
-      </rect>
-     </property>
-        <layout class="QVBoxLayout" name="users">
-            <property name="spacing">
-                <number>9</number>
-            </property>
-            <item>
-                <widget class="QLabel" name="label">
-                    <property name="focusPolicy">
-                        <enum>Qt::NoFocus</enum>
-                    </property>
-                    <property name="layoutDirection">
-                        <enum>Qt::LeftToRight</enum>
-                    </property>
-                    <property name="text">
-                        <string>没有人连接</string>
-                    </property>
-                </widget>
-            </item>
-        </layout>
-    </widget>
+       <widget class="QWidget" name="verticalLayoutWidget">
+           <property name="geometry">
+               <rect>
+                   <x>30</x>
+                   <y>40</y>
+                   <width>211</width>
+                   <height>411</height>
+               </rect>
+           </property>
+           <layout class="QVBoxLayout" name="users">
+               <property name="spacing">
+                   <number>9</number>
+               </property>
+               <item>
+                   <widget class="QLabel" name="label">
+                       <property name="focusPolicy">
+                           <enum>Qt::NoFocus</enum>
+                       </property>
+                       <property name="layoutDirection">
+                           <enum>Qt::LeftToRight</enum>
+                       </property>
+                       <property name="text">
+                           <string>没有人连接</string>
+                       </property>
+                   </widget>
+               </item>
+           </layout>
+       </widget>
        <widget class="QTextBrowser" name="textBrowser">
            <property name="geometry">
                <rect>
@@ -292,6 +292,7 @@
              </property>
              <addaction name="actionhow"/>
              <addaction name="actionself_info"/>
+             <addaction name="actiontext_font"/>
          </widget>
          <addaction name="menuyu"/>
      </widget>
@@ -309,6 +310,11 @@
      <action name="actionfiel_save_path">
          <property name="text">
              <string>fiel_save_path</string>
+         </property>
+     </action>
+     <action name="actiontext_font">
+         <property name="text">
+             <string>text_font</string>
          </property>
      </action>
  </widget>

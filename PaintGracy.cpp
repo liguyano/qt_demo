@@ -5,7 +5,6 @@
 #include "PaintGracy.h"
 
 PaintGracy::PaintGracy(QWidget *parents) : QGraphicsView(parents) {
-
     QSizePolicy sizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     sizePolicy.setHorizontalStretch(0);
     sizePolicy.setVerticalStretch(0);

@@ -78,8 +78,10 @@ MainWindow::~MainWindow() {
     qInfo() << "bye";
     for (int i = 0; i < all_user.size(); ++i) {
         auto ip = all_user[i].toString().split(":")[3];
-        QFile tmp("./" + ip + ".txt");
+        QFile tmp("./" + ip + ".html");
         tmp.open(QIODevice::WriteOnly);
+/*        tmp.write(R"(<link rel="stylesheet" type="text/css" href="./setting/style.css" />)",68);
+        tmp.write("\n",1);*/
         for (auto mess: messages[i]) {
             auto a = mess.toUtf8();
             tmp.write(a, a.length());
@@ -189,15 +191,21 @@ void MainWindow::regist_one(QHostAddress add) {
         }
         i++;
     }
-    QFile record(iip + ".txt");
+    QFile record(iip + ".html");
     QStringList mes;
-    record.open(QIODevice::ReadOnly);
+
     if (record.exists()) {
+        record.open(QIODevice::ReadOnly);
         while (!record.atEnd()) {
             mes.append(record.readLine());
             mes[mes.size() - 1] = mes[mes.size() - 1].replace('\n', "");
-          //  printf_s("%s\n", C_STR(mes[mes.size()-1]));
+            //  printf_s("%s\n", C_STR(mes[mes.size()-1]));
         }
+    } else {
+        record.open(QIODevice::WriteOnly);
+        mes.append(R"(<link rel="stylesheet" type="text/css" href="./setting/style.css" />)");
+        record.write(R"(<link rel="stylesheet" type="text/css" href="./setting/style.css" />)", 68);
+        record.write("\n", 1);
     }
     record.close();
     tcp->getUdpSock()->writeDatagram("IM", add, this->port);

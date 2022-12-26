@@ -58,6 +58,7 @@ public slots:
 
 private:
     qint32 statue = STATUE_DRAW;
+    qint32 pen_font_size;
     QColor pen_brush_color;
     QPoint lastPoint = {0, 0};
     //QPoint l_lastPoint = {0, 0};

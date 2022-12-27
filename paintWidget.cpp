@@ -35,6 +35,7 @@ paintWidget::paintWidget(QWidget *parent) : QWidget(parent), ui(new Ui::paintWId
 
 
 void paintWidget::paintEvent(QPaintEvent *event) {
+
     QWidget::paintEvent(event);
     QPainter painter(this);
     painter.setRenderHint(QPainter::Antialiasing);
@@ -74,7 +75,7 @@ void paintWidget::mouse_move(QPoint point) {
         pen.setColor(pen_brush_color);
         pen.setWidth(2);
         item->setPen(pen);
-        item->setPos(-275, -190);//缺省位置在scene的（0,0）
+        item->setPos(-paintArea->size().rwidth() / 2, -paintArea->size().rheight() / 2);//缺省位置在scene的（0,0）
         // item->setSelected(true);
         scene->addItem(item);
 
@@ -137,4 +138,10 @@ void paintWidget::del_button_clicked(bool clicked) {
     for (auto *s: scene->selectedItems()) {
         scene->removeItem(s);
     }
+}
+
+void paintWidget::resizeEvent(QResizeEvent *event) {
+    QWidget::resizeEvent(event);
+    // qInfo()<<"size"<<event->size();
+    paintArea->resize(event->size());
 }

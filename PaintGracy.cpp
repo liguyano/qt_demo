@@ -9,8 +9,10 @@ PaintGracy::PaintGracy(QWidget *parents) : QGraphicsView(parents) {
     sizePolicy.setHorizontalStretch(0);
     sizePolicy.setVerticalStretch(0);
     sizePolicy.setHeightForWidth(parents->sizePolicy().hasHeightForWidth());
+
    // setDragMode(QGraphicsView::NoDrag);
     this->setSizePolicy(sizePolicy);
+    this->setSizeAdjustPolicy(AdjustToContents);
 }
 
 
@@ -27,5 +29,9 @@ void PaintGracy::mouseMoveEvent(QMouseEvent *event) {
     QGraphicsView::mouseMoveEvent(event);
     emit mouse_move(event->pos());
     //update();
+}
+
+void PaintGracy::on_resized(int screen) {
+
 }
 

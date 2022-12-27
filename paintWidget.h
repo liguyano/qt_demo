@@ -41,6 +41,8 @@ public:
 
     void mouseReleaseEvent(QMouseEvent *event) override;
 
+    void resizeEvent(QResizeEvent *event) override;
+
 public slots:
 
     void mouse_move(QPoint point);

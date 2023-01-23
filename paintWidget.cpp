@@ -28,6 +28,7 @@ paintWidget::paintWidget(QWidget *parent) : QWidget(parent), ui(new Ui::paintWId
     connect(this->ui->draw_btn, SIGNAL(clicked(bool)), this, SLOT(draw_button_clicked(bool)));
     connect(this->ui->color_selecter, SIGNAL(clicked(bool)), this, SLOT(color_button_clicked(bool)));
     connect(this->ui->del_btn, SIGNAL(clicked(bool)), this, SLOT(del_button_clicked(bool)));
+    connect(this->ui->mouse_btn, SIGNAL(clicked(bool)), this, SLOT(mouse_button_clicked(bool)));
     scene = new QGraphicsScene(QRect(-200, -100, 400, 200));
     paintArea->setScene(scene);
     draw_button_clicked(true);
@@ -80,6 +81,8 @@ void paintWidget::mouse_move(QPoint point) {
         scene->addItem(item);
 
 
+    } else if (statue == STATUE_MOVE) {
+        _sceneMove(point);
     }
 //qInfo()<<point.x()<<" "<<point.y();
 
@@ -109,7 +112,6 @@ void paintWidget::mouseReleaseEvent(QMouseEvent *event) {
 void paintWidget::mouse_down(bool isleft, QPoint where) {
     if (isleft) {
         lastPoint = where;
-
         mouse_move(where);
     }
 }
@@ -126,11 +128,19 @@ void paintWidget::draw_button_clicked(bool clicked) {
     paintArea->setDragMode(QGraphicsView::NoDrag);
     paintArea->setMouseTracking(false);
 
-
 }
 
 void paintWidget::color_button_clicked(bool clicked) {
     pen_brush_color = QColorDialog::getColor(pen_brush_color, NULL, "选择填充颜色");
+    for (auto *item: scene->selectedItems()) {
+        auto a = qgraphicsitem_cast<QGraphicsLineItem *>(item);
+        QPen pen;
+        pen.setColor(pen_brush_color);
+        pen.setWidth(2);
+        a->setPen(pen);
+        a->update();
+    }
+
 
 }
 
@@ -144,4 +154,22 @@ void paintWidget::resizeEvent(QResizeEvent *event) {
     QWidget::resizeEvent(event);
     // qInfo()<<"size"<<event->size();
     paintArea->resize(event->size());
+}
+
+void paintWidget::mouse_button_clicked(bool clicked) {
+    statue = STATUE_MOVE;
+
+}
+
+
+void paintWidget::_sceneMove(QPoint point) {
+//qInfo()<<point<<"point";
+    paintArea->setDragMode(QGraphicsView::NoDrag);
+    paintArea->setMouseTracking(false);
+    scene->sceneRect();
+    auto items = scene->items();
+    for (auto item: items) {
+        //auto a= qgraphicsitem_cast<QGraphicsLineItem*>(item);
+        item->moveBy((point.x() - lastPoint.x()) / 10, (point.y() - lastPoint.y()) / 10);
+    }
 }

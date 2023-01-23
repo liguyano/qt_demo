@@ -24,6 +24,7 @@
 #include <QFileDialog>
 #include <QPainter>
 #define C_STR(A) (A).toStdString().c_str()
+#define pr() qInfo()
 
 typedef QString qs;
 

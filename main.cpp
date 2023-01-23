@@ -1,6 +1,7 @@
 #include <QSharedMemory>
 #include <QMessageBox>
 #include "mainwindow.h"
+#include <Windows.h>
 
 //#pragma comment(linker,"/subsystem:\"Windows\" /entry:\"mainCRTStartup\"")
 int main(int argc, char *argv[]) {
@@ -9,6 +10,7 @@ int main(int argc, char *argv[]) {
     {
         qInfo() << "already running";
         qApp->quit(); //创建失败，说明已经有一个程序运行，退出当前程序
+        MessageBox(NULL, ("already running"), ("Warning"), MB_OK | MB_ICONWARNING);
         return -1;
     }
     QApplication::addLibraryPath("./plugins");

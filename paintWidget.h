@@ -6,6 +6,7 @@
 #define QT_DEMO_PAINTWIDGET_H
 #define STATUE_DRAW 1
 #define STATUE_SELECT 2
+#define STATUE_MOVE 3
 
 #include "publicInclude.h"
 
@@ -57,6 +58,8 @@ public slots:
 
     void del_button_clicked(bool clicked);
 
+    void mouse_button_clicked(bool clicked);
+
 
 private:
     qint32 statue = STATUE_DRAW;
@@ -66,6 +69,8 @@ private:
     //QPoint l_lastPoint = {0, 0};
     QGraphicsScene *scene;
     Ui::paintWIdget *ui;
+
+    void _sceneMove(QPoint point);
 
 };
 

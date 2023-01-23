@@ -6,12 +6,12 @@
         <ipAddres>
             <v4>192.168.122.1</v4>
             <v4>192.168.88.1</v4>
-            <v4>192.168.1.100</v4>
+            <v4>192.168.1.24</v4>
             <v4>172.30.96.1</v4>
         </ipAddres>
         <port>7001</port>
         <fileOpenDir>./file_recv/</fileOpenDir>
-        <fileSavePath>./file_recv/</fileSavePath>
+        <fileSavePath>E:/OneDrive - jxstnu.edu.cn/c++/demo/qt_Demo/cmake-build-release/file_recv/</fileSavePath>
     </user>
     <friends>
         <friend name="dd">

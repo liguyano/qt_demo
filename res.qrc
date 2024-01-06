@@ -1,6 +1,7 @@
 <RCC>
   <qresource prefix="/images">
     <file>images/RECTANGL.BMP</file>
+    <file>images/load.png</file>
     <file>images/ELLIPSE.BMP</file>
     <file>images/718.bmp</file>
     <file>images/LINE.BMP</file>

@@ -7,10 +7,12 @@
 #include "tcpFileSender.h"
 #include <QDir>
 #include <thread>
+#include <QStandardItemModel>
 #include "tcpReceiver.h"
 #include "InfoDialog.h"
 #include "setting.h"
 #include "paintWidget.h"
+#include "frinds.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -88,6 +90,8 @@ public slots:
     void nextFIle();
 
     void handWrite_click();
+
+    void friend_click();
 
 
 private:

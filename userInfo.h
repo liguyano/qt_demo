@@ -8,6 +8,8 @@
 #include "publicInclude.h"
 #include "tinyxml/tinystr.h"
 #include "tinyxml/tinyxml.h"
+#include <QJsonObject>
+#include <QJsonArray>
 
 class userInfo : public QObject {
 Q_OBJECT
@@ -26,6 +28,8 @@ public:
 
     TiXmlElement *get_element(QString where);
 
+    QJsonArray getFrineds();
+
     userInfo();
 
     ~userInfo();
@@ -33,6 +37,8 @@ public:
     const TiXmlDocument &getData() const;
 
     QStringList read_multi_data(QString where);
+
+    void refreshFriendList(QList<QStringList> dat);
 
 private:
     TiXmlDocument data;

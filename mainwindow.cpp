@@ -1,6 +1,7 @@
 #include <QMessageBox>
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include "frinds.h"
 
 
 MainWindow::MainWindow(QWidget *parent)
@@ -69,6 +70,21 @@ MainWindow::MainWindow(QWidget *parent)
     connect(sock, SIGNAL(next()), this, SLOT(nextFIle()));
     connect(receiver, SIGNAL(persent(qint32)), this, SLOT(persent_change(qint32)));
     connect(ui->handWrite, SIGNAL(clicked(bool)), this, SLOT(handWrite_click()));
+    connect(ui->pushButton_3, SIGNAL(clicked(bool)), this, SLOT(friend_click()));
+    auto fris = us.getFrineds();
+    for (auto f: fris) {
+        if (f.isObject()) {
+            // qInfo()<<f.toObject()["name"].toString();
+            //qInfo()<<f.toObject()["v4"].toString();
+            QHostAddress address(f.toObject()["name"].toString());
+            regist_one(QHostAddress(f.toObject()["v4"].toString()));
+            add_nameAndip(f.toObject()["name"].toString(), QHostAddress(f.toObject()["v4"].toString()));
+            remove_one(QHostAddress(f.toObject()["v4"].toString()));
+            tcp->getUdpSock()->writeDatagram("hello", QHostAddress(f.toObject()["v4"].toString()), 7001);
+            tcp->getUdpSock()->writeDatagram("IM", QHostAddress(f.toObject()["v4"].toString()), 7001);
+        }
+    }
+
 }
 
 MainWindow::~MainWindow() {
@@ -174,12 +190,13 @@ void MainWindow::regist_one(QHostAddress add) {
     bool quit = false;
     auto ips = add.toString().split(':');
     auto iip = ips[ips.size() - 1];
+    iip = iip.split('%')[0];
     for (auto s: all_ip) {//if self
         if (s.toString() == iip) {
             return;
         }
     }
-
+    qInfo() << iip;
     ui->label->hide();
     int i = 0;
     for (const auto &user: all_user) {//if register already
@@ -589,12 +606,29 @@ void MainWindow::persent_change(int pers) {
 void MainWindow::handWrite_click() {
     auto h = new paintWidget(this);
     h->show();
-
 }
 
 void MainWindow::mousePressEvent(QMouseEvent *event) {
 
     ui->groupBox->hide();
+}
+
+void MainWindow::friend_click() {
+    auto fr = new frindWidget();
+    fr->show();
+    userInfo us;
+    us.lood("./setting/option.xml");
+    auto fris = us.getFrineds();
+    for (auto f: fris) {
+        if (f.isObject()) {
+            // qInfo()<<f.toObject()["name"].toString();
+            //qInfo()<<f.toObject()["v4"].toString();
+            QHostAddress address(f.toObject()["name"].toString());
+            regist_one(QHostAddress(f.toObject()["v4"].toString()));
+            add_nameAndip(f.toObject()["name"].toString(), QHostAddress(f.toObject()["v4"].toString()));
+            remove_one(QHostAddress(f.toObject()["v4"].toString()));
+        }
+    }
 }
 
 

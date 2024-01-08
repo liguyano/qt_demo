@@ -251,3 +251,48 @@ QStringList userInfo::read_multi_data(QString what) {
     return result;
 
 }
+
+QJsonArray userInfo::getFrineds() {
+    qInfo() << "start";
+    QJsonArray ja;
+    auto fris = data.FirstChildElement("data")->FirstChildElement("friends");
+    if (!fris) {
+        qInfo() << "wrong";
+    }
+    auto fri = fris->FirstChild();
+    while (fri) {
+        QJsonObject jo;
+        jo.insert("name", fri->FirstChildElement("name")->GetText());
+        // qDebug()<<fri->FirstChildElement("name")->GetText();
+        jo.insert("v4", fri->FirstChildElement("ipAddres")->FirstChildElement("v4")->GetText());
+        // qDebug()<<fri->FirstChildElement("ipAddres")->FirstChildElement("v4")->GetText();
+        fri = fri->NextSibling("friend");
+        ja.append(jo);
+    }
+    return ja;
+}
+
+void userInfo::refreshFriendList(QList<QStringList> dat) {
+    auto fris = data.FirstChildElement("data")->FirstChildElement("friends");
+    fris->Clear();
+    for (auto li: dat) {
+        if (li[1] == "")
+            continue;
+        auto n = new TiXmlElement("friend");
+        auto name = new TiXmlElement("name");
+        auto txtName = new TiXmlText(li[0].toStdString().c_str());
+        auto txtv4 = new TiXmlText(li[1].toStdString().c_str());
+        auto addr = new TiXmlElement("ipAddres");
+        auto v4 = new TiXmlElement("v4");
+        v4->LinkEndChild(txtv4);
+        addr->LinkEndChild(v4);
+        fris->LinkEndChild(n);
+        n->LinkEndChild(name);
+        name->LinkEndChild(txtName);
+        n->LinkEndChild(addr);
+    }
+    data.SaveFile();
+
+}
+
+

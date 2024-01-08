@@ -4,21 +4,20 @@
         <name>沙耶</name>
         <id>007</id>
         <ipAddres>
-            <v4>192.168.122.1</v4>
-            <v4>192.168.88.1</v4>
-            <v4>192.168.1.24</v4>
-            <v4>172.30.96.1</v4>
+            <v4>192.168.46.1</v4>
+            <v4>192.168.144.1</v4>
+            <v4>192.168.1.100</v4>
+            <v4>172.27.176.1</v4>
         </ipAddres>
         <port>7001</port>
         <fileOpenDir>./file_recv/</fileOpenDir>
-        <fileSavePath>E:/OneDrive - jxstnu.edu.cn/c++/demo/qt_Demo/cmake-build-release/file_recv/</fileSavePath>
+        <fileSavePath>D:/OneDrive - jxstnu.edu.cn/c++/demo/qt_Demo/cmake-build-release/file_recv/</fileSavePath>
     </user>
     <friends>
-        <friend name="dd">
-            <name>dd</name>
+        <friend>
+            <name>win7</name>
             <ipAddres>
-                <v4>0.0.0.0</v4>
-                <v6>ff::0.0.0.0</v6>
+                <v4>172.27.180.41</v4>
             </ipAddres>
         </friend>
     </friends>

@@ -69,6 +69,9 @@ void udpListening::processData() {
         {
             auto ff = message.split('?');
             emit file_come(ff[1], add, ff[2].toInt(), ff[3]);
+        } else if (message.left(2) == "FI") {
+            auto ff = message.split('?');
+            emit icon_come(ff[1], add, ff[2].toInt(), ff[3]);
         }
         if (message == "test") {
             auto a = this->property("times").value<int>();

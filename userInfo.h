@@ -40,6 +40,10 @@ public:
 
     void refreshFriendList(QList<QStringList> dat);
 
+    void changeIconPath(QString path);
+
+    QString getIconPath();
+
 private:
     TiXmlDocument data;
     QString settingPath;

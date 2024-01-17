@@ -25,6 +25,9 @@ void tcpReceiver::deal_mess() {
         emit persent(100);
         pers->setValue(100);
         rec->disconnectFromHost();
+        if (isIcon)
+                emit icon_end(fileName, add);
+
         return;
     }
     bytes.push_back(a);
@@ -68,6 +71,7 @@ void tcpReceiver::conn(const QHostAddress &add, QString path) {
         return;
     }
     printf_s("connected\n");
+
 }
 
 void tcpReceiver::save() {

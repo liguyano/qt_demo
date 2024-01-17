@@ -16,6 +16,7 @@ Q_OBJECT
     QFile *file;
 
 public:
+    bool isIcon = false;
     QString fileName;
     qint64 size;
     QProgressBar *pers;
@@ -32,6 +33,8 @@ public:
 signals:
 
     void file_persent(QHostAddress add, qint32 persent, int speed);
+
+    void icon_end(QString filename, QHostAddress add);
 
     void persent(qint32 pers);
 

@@ -41,6 +41,8 @@ signals:
 
     void file_come(QString fileName, QHostAddress add, qint64 size, QString fm);
 
+    void icon_come(QString fileName, QHostAddress add, qint64 size, QString fm);
+
     void file_end();
 
     void test(int i);

@@ -32,6 +32,8 @@ public slots:
 
     void save_path_btn();
 
+    void selectIcon();
+
 public:
 
     explicit setting(QWidget *parents = nullptr);

@@ -7,17 +7,18 @@
             <v4>192.168.46.1</v4>
             <v4>192.168.144.1</v4>
             <v4>192.168.1.100</v4>
-            <v4>172.27.176.1</v4>
+            <v4>172.25.112.1</v4>
         </ipAddres>
         <port>7001</port>
         <fileOpenDir>./file_recv/</fileOpenDir>
         <fileSavePath>D:/OneDrive - jxstnu.edu.cn/c++/demo/qt_Demo/cmake-build-release/file_recv/</fileSavePath>
+        <iconPath>D:/OneDrive - jxstnu.edu.cn/图片/本机照片/2024/01/20240107_082410000_iOS.jpg</iconPath>
     </user>
     <friends>
         <friend>
             <name>win7</name>
             <ipAddres>
-                <v4>172.27.180.41</v4>
+                <v4>172.18.123.245</v4>
             </ipAddres>
         </friend>
     </friends>

@@ -4,6 +4,7 @@
 #include "frinds.h"
 
 
+
 MainWindow::MainWindow(QWidget *parent)
         : QMainWindow(parent), ui(new Ui::MainWindow) {
     this->dirExit("./setting/");
@@ -50,6 +51,11 @@ MainWindow::MainWindow(QWidget *parent)
     tcp->start();
     sock = new tcpSock("s.txt", this);
     receiver = new tcpReceiver("", this);
+    QWidget *contentWidget = new QWidget();
+    ui->frindsArea->setWidget(contentWidget);
+    ui->frindsArea->setWidgetResizable(true); // 使内容区域自动适应滚动区域大小
+    frindBoxLayout = new QVBoxLayout(contentWidget);
+    frindBoxLayout->setAlignment(Qt::AlignTop);
     /*   document=new QTextDocument;
 
        ui->textBrowser->setDocument(document);
@@ -71,19 +77,25 @@ MainWindow::MainWindow(QWidget *parent)
     connect(receiver, SIGNAL(persent(qint32)), this, SLOT(persent_change(qint32)));
     connect(ui->handWrite, SIGNAL(clicked(bool)), this, SLOT(handWrite_click()));
     connect(ui->pushButton_3, SIGNAL(clicked(bool)), this, SLOT(friend_click()));
+    connect(tcp, SIGNAL(icon_come(QString, QHostAddress, qint64, QString)), this,
+            SLOT(recv_icon(QString, QHostAddress, qint64, QString)));
+    connect(receiver, SIGNAL(icon_end(QString, QHostAddress)), this, SLOT(setFrindIcon(QString, QHostAddress)));
+    loadIcon();
     auto fris = us.getFrineds();
     for (auto f: fris) {
         if (f.isObject()) {
             // qInfo()<<f.toObject()["name"].toString();
             //qInfo()<<f.toObject()["v4"].toString();
             QHostAddress address(f.toObject()["name"].toString());
-            regist_one(QHostAddress(f.toObject()["v4"].toString()));
-            add_nameAndip(f.toObject()["name"].toString(), QHostAddress(f.toObject()["v4"].toString()));
-            remove_one(QHostAddress(f.toObject()["v4"].toString()));
+            //regist_one(QHostAddress(f.toObject()["v4"].toString()));
+            //add_nameAndip(f.toObject()["name"].toString(), QHostAddress(f.toObject()["v4"].toString()));
+            //remove_one(QHostAddress(f.toObject()["v4"].toString()));
+
             tcp->getUdpSock()->writeDatagram("hello", QHostAddress(f.toObject()["v4"].toString()), 7001);
             tcp->getUdpSock()->writeDatagram("IM", QHostAddress(f.toObject()["v4"].toString()), 7001);
         }
     }
+
 
 }
 
@@ -109,7 +121,7 @@ MainWindow::~MainWindow() {
 
 void MainWindow::btn_clicked() {
     person->setAge(person->getAge() + 1);
-    ui->label->setText(ui->lineEdit->text());
+
     QByteArray me = "M";
     me += ui->lineEdit->text();
     if (ui->lineEdit->text().size() > 0) {
@@ -197,7 +209,6 @@ void MainWindow::regist_one(QHostAddress add) {
         }
     }
     qInfo() << iip;
-    ui->label->hide();
     int i = 0;
     for (const auto &user: all_user) {//if register already
 
@@ -230,15 +241,23 @@ void MainWindow::regist_one(QHostAddress add) {
     btn->setProperty("id", all_user.size());
     ip_name_map[add.toString()] = add.toString();
     btn->setProperty("ip", add.toString());
-    ui->users->addWidget(btn);
+
     btn->setText(add.toString());
     all_user.push_back(add);
+    frindBoxLayout->addWidget(btn);
+    QString iconFilePath = "D:/OneDrive - jxstnu.edu.cn/c++/demo/qt_Demo/cmake-build-release/file_recv/a.png";
 
+    QPixmap pixmap(iconFilePath);
+    btn->setIcon(pixmap);
+    btn->setIconSize({32, 32});
     messages.push_back(mes);
     buttons.push_back(btn);
     QString mess = "N" + options.value("name");
     tcp->getUdpSock()->writeDatagram(mess.toStdString().c_str(), add, this->port);
     connect(btn, SIGNAL(clicked(bool)), this, SLOT(usr_ben_clicked()));
+    userInfo us;
+    us.lood("setting/option.xml");
+    sendF(us.read_info("user.iconPath"), "", "FI");
 }
 
 void MainWindow::usr_ben_clicked() {
@@ -384,8 +403,7 @@ void MainWindow::send_file() {
 
 
 void MainWindow::recv_file(QString fileName, QHostAddress add, qint64 size, QString dir) {
-//auto reciver=new tcpReceiver(add,fileName,this);
-
+//auto reciver=new tcpReceiver(add,fileName,this)
     auto pers = new QProgressBar(this);
     pers->setValue(0);
     messages[who].append("PERSENT:0:left");
@@ -442,6 +460,7 @@ void MainWindow::openSetting(bool a) {
     dia->exec();
     delete dia;
     upGradeuserIfo();
+    loadIcon();
 
 }
 
@@ -481,12 +500,15 @@ void MainWindow::port_change(qint32 port) {
     this->port = port;
 }
 
-void MainWindow::sendF(QString fileName, QString p) {
+/**
+ * @arg p mean the path that you want to save in.
+ * */
+void MainWindow::sendF(QString fileName, QString p, QString type) {
     sock->busy = true;
-
     if (fileName.size() <= 0)
         return;
-    printf_s("line 395: filename: %s path%s \n", fileName.toStdString().c_str(), p.toStdString().c_str());
+
+    printf_s("line"": filename: %s path%s \n", fileName.toStdString().c_str(), p.toStdString().c_str());
     auto paths = fileName.split('/');
     QString pathName = "";
     for (int i = 0; i < paths.size() - 1; ++i) {
@@ -503,7 +525,7 @@ void MainWindow::sendF(QString fileName, QString p) {
     port = us.read_info("user.port").toInt();
     sock->star(port);
     auto size = QFileInfo(fileName).size();
-    QString mess = "FD?" + paths[paths.size() - 1] + "?" + QString::number(size) + "?" + p;
+    QString mess = type + "?" + paths[paths.size() - 1] + "?" + QString::number(size) + "?" + p;
     tcp->getUdpSock()->writeDatagram(mess.toUtf8(), all_user[who], port);
     //  messages[who].append(QString("<div style=\" text-align:right\"><img filename= \"%1\" src=\"a.png\" width=\"034\" height=\"028\" alt=\"404\"  /><div/>").arg(fileName));
     // buttons[who]->click();
@@ -630,5 +652,82 @@ void MainWindow::friend_click() {
         }
     }
 }
+
+void MainWindow::loadIcon() {
+    qInfo() << "loadIcon start";
+    userInfo uinfo;
+    uinfo.lood("./setting/option.xml");
+
+    QPixmap pixmap(uinfo.getIconPath());
+    QPixmap scaledPixmap = pixmap.scaled(100, 100, Qt::KeepAspectRatio, Qt::SmoothTransformation);
+
+    if (!pixmap.isNull()) {
+        // 创建一个QBrush并设置其为QPixmap
+        QBrush background(scaledPixmap);
+
+        // 创建一个QPalette并设置其窗口背景为上述brush
+        QPalette palette;
+        palette.setBrush(QPalette::Window, background);
+
+        // 将palette应用到frame
+        ui->frame_3->setAutoFillBackground(true);
+        ui->frame_3->setPalette(palette);
+    }
+
+}
+
+bool isFileExists(const QString &filePath) {
+    return QFile::exists(filePath);
+}
+
+void MainWindow::recv_icon(QString fileName, QHostAddress add, qint64 size, QString dir) {
+    static int iconNum = 0;
+
+    auto pers = new QProgressBar(this);
+    pers->setValue(0);
+    messages[who].append("PERSENT:0:left");
+    receiver->fileName = fileName;
+    receiver->isIcon = true;
+    receiver->setProperty("who", who);
+    receiver->setProperty("id", messages[who].size() - 1);
+    receiver->setProperty("align", "left");
+    receiver->size = size;
+    userInfo us;
+    us.lood("./setting/option.xml");
+    receiver->pers = pers;
+    receiver->conn(add, "./");
+    ui->perbars->addWidget(pers);
+    auto la = new QLabel(fileName + "\nfrom " + add.toString());
+    ui->perbars->addWidget(la);
+    qInfo() << add;
+
+
+}
+
+void MainWindow::setFrindIcon(QString fileName, QHostAddress add) {
+    int i;
+    for (const auto &s: all_user) {
+        if (s.isEqual(add)) {
+            //  buttons[i]->setIcon();
+            qInfo() << __LINE__ << "./" + fileName;
+            qInfo() << isFileExists(fileName);
+
+            // fileName="./a.png";
+
+            QPixmap pixmap("./" + fileName);
+            if (pixmap.isNull()) {
+                qInfo() << "null";
+            } else {
+                buttons[i]->setIcon(pixmap);
+                buttons[i]->setIconSize({32, 32});
+            }
+            break;
+        }
+        i++;
+    }
+    receiver->isIcon = false;
+}
+
+
 
 

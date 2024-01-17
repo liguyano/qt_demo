@@ -6,7 +6,7 @@
 //#pragma comment(linker,"/subsystem:\"Windows\" /entry:\"mainCRTStartup\"")
 int main(int argc, char *argv[]) {
 
-    static QSharedMemory *shareMem = new QSharedMemory("SingleApp"); //创建“SingleApp”的共享内存块
+    static QSharedMemory *shareMem = new QSharedMemory("QtMyUdpTcpSoft"); //创建“SingleApp”的共享内存块
     if (!shareMem->create(1))//创建大小1b的内存
     {
         qInfo() << "already running";

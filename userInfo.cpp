@@ -295,4 +295,18 @@ void userInfo::refreshFriendList(QList<QStringList> dat) {
 
 }
 
+void userInfo::changeIconPath(QString path) {
+    auto iconpath = data.RootElement()->FirstChildElement("user")->FirstChildElement("iconPath");
+    iconpath->Clear();
+    auto iconText = new TiXmlText(path.toStdString().c_str());
+    iconpath->LinkEndChild(iconText);
+    data.SaveFile();
+}
+
+QString userInfo::getIconPath() {
+    auto iconpath = data.RootElement()->FirstChildElement("user")->FirstChildElement("iconPath");
+    auto path = iconpath->FirstChild()->ToText();
+    return path->Value();
+}
+
 

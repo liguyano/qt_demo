@@ -65,6 +65,8 @@ public slots:
 
     void deal_change();
 
+    void recv_icon(QString fileName, QHostAddress add, qint64 size, QString dir);
+
     void sendSelfInfo(QHostAddress add, quint16 a);
 
     void regist_one(QHostAddress add);
@@ -74,6 +76,8 @@ public slots:
     void add_message(const QString &message, const QHostAddress &add);
 
     void test_alive();
+
+    void setFrindIcon(QString file, QHostAddress add);
 
     void remove_one(QHostAddress add);
 
@@ -100,12 +104,15 @@ private:
     Q_person *person;
     qint32 port;
     QString file_path_tmp;
+    QVBoxLayout *frindBoxLayout;
 
-    void sendF(QString filename, QString path = "");
+    void sendF(QString filename, QString path = "", QString type = "FD");
 
     void dirExit(QString path);
 
     void upGradeuserIfo();
+
+    void loadIcon();
 
 
 };

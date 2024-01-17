@@ -55,6 +55,7 @@ void setting::selectIcon() {
 
     if (!fileName.isEmpty()) {
         UserInfo->changeIconPath(fileName);
+
     }
 
 }

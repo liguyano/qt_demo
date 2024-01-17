@@ -81,6 +81,7 @@ MainWindow::MainWindow(QWidget *parent)
             SLOT(recv_icon(QString, QHostAddress, qint64, QString)));
     connect(receiver, SIGNAL(icon_end(QString, QHostAddress)), this, SLOT(setFrindIcon(QString, QHostAddress)));
     loadIcon();
+    connect(ui->pushButton_4, SIGNAL(clicked(bool)), this, SLOT(load_selceIcon()));
     auto fris = us.getFrineds();
     for (auto f: fris) {
         if (f.isObject()) {
@@ -199,6 +200,8 @@ void MainWindow::sendSelfInfo(QHostAddress add, quint16 a) {
 }
 
 void MainWindow::regist_one(QHostAddress add) {
+    userInfo us;
+    us.lood("setting/option.xml");
     bool quit = false;
     auto ips = add.toString().split(':');
     auto iip = ips[ips.size() - 1];
@@ -211,10 +214,10 @@ void MainWindow::regist_one(QHostAddress add) {
     qInfo() << iip;
     int i = 0;
     for (const auto &user: all_user) {//if register already
-
         if (user.isEqual(add)) {
             buttons[i]->setDisabled(false);
             //tcp->getUdpSock()->writeDatagram("IM",add,this->port);
+            sendF(us.read_info("user.iconPath"), "", "FI");
             return;
         }
         i++;
@@ -245,19 +248,14 @@ void MainWindow::regist_one(QHostAddress add) {
     btn->setText(add.toString());
     all_user.push_back(add);
     frindBoxLayout->addWidget(btn);
-    QString iconFilePath = "D:/OneDrive - jxstnu.edu.cn/c++/demo/qt_Demo/cmake-build-release/file_recv/a.png";
-
-    QPixmap pixmap(iconFilePath);
-    btn->setIcon(pixmap);
-    btn->setIconSize({32, 32});
     messages.push_back(mes);
     buttons.push_back(btn);
     QString mess = "N" + options.value("name");
     tcp->getUdpSock()->writeDatagram(mess.toStdString().c_str(), add, this->port);
     connect(btn, SIGNAL(clicked(bool)), this, SLOT(usr_ben_clicked()));
-    userInfo us;
-    us.lood("setting/option.xml");
+
     sendF(us.read_info("user.iconPath"), "", "FI");
+    btn->setProperty("sent", "true");
 }
 
 void MainWindow::usr_ben_clicked() {
@@ -526,12 +524,27 @@ void MainWindow::sendF(QString fileName, QString p, QString type) {
     sock->star(port);
     auto size = QFileInfo(fileName).size();
     QString mess = type + "?" + paths[paths.size() - 1] + "?" + QString::number(size) + "?" + p;
-    tcp->getUdpSock()->writeDatagram(mess.toUtf8(), all_user[who], port);
-    //  messages[who].append(QString("<div style=\" text-align:right\"><img filename= \"%1\" src=\"a.png\" width=\"034\" height=\"028\" alt=\"404\"  /><div/>").arg(fileName));
-    // buttons[who]->click();
-    ui->perbars->addWidget(pers);
-    auto la = new QLabel(fileName + "\nto " + all_user[who].toString());
-    ui->perbars->addWidget(la);
+    if (type == "FI") {
+        for (auto &addr: all_user) {
+            tcp->getUdpSock()->writeDatagram(mess.toUtf8(), addr, port);
+            //  messages[who].append(QString("<div style=\" text-align:right\"><img filename= \"%1\" src=\"a.png\" width=\"034\" height=\"028\" alt=\"404\"  /><div/>").arg(fileName));
+            // buttons[who]->click();
+            ui->perbars->addWidget(pers);
+            auto la = new QLabel(fileName + "\nto " + addr.toString());
+            ui->perbars->addWidget(la);
+        }
+
+
+    } else {
+        tcp->getUdpSock()->writeDatagram(mess.toUtf8(), all_user[who], port);
+        //  messages[who].append(QString("<div style=\" text-align:right\"><img filename= \"%1\" src=\"a.png\" width=\"034\" height=\"028\" alt=\"404\"  /><div/>").arg(fileName));
+        // buttons[who]->click();
+        ui->perbars->addWidget(pers);
+        auto la = new QLabel(fileName + "\nto " + all_user[who].toString());
+        ui->perbars->addWidget(la);
+    }
+
+
 }
 
 QString createMultipleFolders(const QString path) {
@@ -681,25 +694,8 @@ bool isFileExists(const QString &filePath) {
 }
 
 void MainWindow::recv_icon(QString fileName, QHostAddress add, qint64 size, QString dir) {
-    static int iconNum = 0;
-
-    auto pers = new QProgressBar(this);
-    pers->setValue(0);
-    messages[who].append("PERSENT:0:left");
-    receiver->fileName = fileName;
     receiver->isIcon = true;
-    receiver->setProperty("who", who);
-    receiver->setProperty("id", messages[who].size() - 1);
-    receiver->setProperty("align", "left");
-    receiver->size = size;
-    userInfo us;
-    us.lood("./setting/option.xml");
-    receiver->pers = pers;
-    receiver->conn(add, "./");
-    ui->perbars->addWidget(pers);
-    auto la = new QLabel(fileName + "\nfrom " + add.toString());
-    ui->perbars->addWidget(la);
-    qInfo() << add;
+    recv_file(fileName, add, size, dir);
 
 
 }
@@ -708,13 +704,14 @@ void MainWindow::setFrindIcon(QString fileName, QHostAddress add) {
     int i;
     for (const auto &s: all_user) {
         if (s.isEqual(add)) {
+            userInfo us;
+            us.lood("./setting/option.xml");
             //  buttons[i]->setIcon();
             qInfo() << __LINE__ << "./" + fileName;
-            qInfo() << isFileExists(fileName);
-
+            qInfo() << isFileExists(us.read_info("user.fileSavePath") + fileName);
             // fileName="./a.png";
 
-            QPixmap pixmap("./" + fileName);
+            QPixmap pixmap(us.read_info("user.fileSavePath") + fileName);
             if (pixmap.isNull()) {
                 qInfo() << "null";
             } else {
@@ -726,6 +723,13 @@ void MainWindow::setFrindIcon(QString fileName, QHostAddress add) {
         i++;
     }
     receiver->isIcon = false;
+}
+
+void MainWindow::load_selceIcon() {
+    setting set;
+    set.selectIcon();
+    loadIcon();
+
 }
 
 

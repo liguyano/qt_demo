@@ -97,6 +97,8 @@ public slots:
 
     void friend_click();
 
+    void load_selceIcon();
+
 
 private:
     QStringList file_list;

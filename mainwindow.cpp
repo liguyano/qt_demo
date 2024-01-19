@@ -1,4 +1,5 @@
 #include <QMessageBox>
+#include <QNetworkInterface>
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "frinds.h"
@@ -56,12 +57,18 @@ MainWindow::MainWindow(QWidget *parent)
     ui->frindsArea->setWidgetResizable(true); // 使内容区域自动适应滚动区域大小
     frindBoxLayout = new QVBoxLayout(contentWidget);
     frindBoxLayout->setAlignment(Qt::AlignTop);
+    QWidget *barContent = new QWidget();
+    ui->filePersents->setWidget(barContent);
+    ui->filePersents->setWidgetResizable(true);
+    persentBarLayout = new QVBoxLayout(barContent);
+    persentBarLayout->setAlignment(Qt::AlignTop);
     /*   document=new QTextDocument;
 
        ui->textBrowser->setDocument(document);
        document->setHtml("<div align=\"right\">addds<div/><br/><div align=\"left\">addds<div/>");*/
     // ui->textBrowser->setAlignment(Qt::AlignRight);
     sent2All();
+    qInfo() << "send to all done ";
     connect(tcp, SIGNAL(recvReginster(QHostAddress, quint16)), this, SLOT(sendSelfInfo(QHostAddress, quint16)));
     connect(tcp, SIGNAL(add_new(QHostAddress)), this, SLOT(regist_one(QHostAddress)));
     connect(tcp, SIGNAL(message_come(QString, QHostAddress)), this, SLOT(add_message(QString, QHostAddress)));
@@ -82,7 +89,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(receiver, SIGNAL(icon_end(QString, QHostAddress)), this, SLOT(setFrindIcon(QString, QHostAddress)));
     loadIcon();
     connect(ui->pushButton_4, SIGNAL(clicked(bool)), this, SLOT(load_selceIcon()));
-    auto fris = us.getFrineds();
+/*    auto fris = us.getFrineds();
     for (auto f: fris) {
         if (f.isObject()) {
             // qInfo()<<f.toObject()["name"].toString();
@@ -95,7 +102,7 @@ MainWindow::MainWindow(QWidget *parent)
             tcp->getUdpSock()->writeDatagram("hello", QHostAddress(f.toObject()["v4"].toString()), 7001);
             tcp->getUdpSock()->writeDatagram("IM", QHostAddress(f.toObject()["v4"].toString()), 7001);
         }
-    }
+    }*/
 
 
 }
@@ -357,22 +364,18 @@ void MainWindow::test_alive() {
 }
 
 void MainWindow::sent2All() {
+    QString ipAddr = ("%1.%2.%3.%4");
+    QString needIp;
     for (auto ip: all_ip) {
         auto ips = ip.toString();
         auto all = ips.split('.');
-        for (int i = 1; i < 255; ++i) {
-            QString needIp = "";
-            for (int j = 0; j < 3; ++j) {
-                needIp += all[j];
-                needIp += ".";
-            }
-            needIp += QString::number(i);
-            //   qInfo()<<needIp;
+        for (int i = 0; i < 255; ++i) {
+            needIp = ipAddr.arg(all[0]).arg(all[1]).arg(i).arg(255);
             QHostAddress tmp(needIp);
-            //tcp->getUdpSock()->writeDatagram("IM",tmp,this->port);
             tcp->getUdpSock()->writeDatagram("hello", tmp, this->port);
         }
     }
+
 }
 
 void MainWindow::remove_one(QHostAddress add) {
@@ -414,9 +417,10 @@ void MainWindow::recv_file(QString fileName, QHostAddress add, qint64 size, QStr
     us.lood("./setting/option.xml");
     receiver->pers = pers;
     receiver->conn(add, us.read_info("user.fileSavePath") + dir);
-    ui->perbars->addWidget(pers);
+    persentBarLayout->addWidget(pers);
+
     auto la = new QLabel(fileName + "\nfrom " + add.toString());
-    ui->perbars->addWidget(la);
+    persentBarLayout->addWidget(la);
     //  connect(tcp, SIGNAL(file_end()),receiver, SLOT(end()));
 }
 
@@ -529,9 +533,9 @@ void MainWindow::sendF(QString fileName, QString p, QString type) {
             tcp->getUdpSock()->writeDatagram(mess.toUtf8(), addr, port);
             //  messages[who].append(QString("<div style=\" text-align:right\"><img filename= \"%1\" src=\"a.png\" width=\"034\" height=\"028\" alt=\"404\"  /><div/>").arg(fileName));
             // buttons[who]->click();
-            ui->perbars->addWidget(pers);
+            persentBarLayout->addWidget(pers);
             auto la = new QLabel(fileName + "\nto " + addr.toString());
-            ui->perbars->addWidget(la);
+            persentBarLayout->addWidget(la);
         }
 
 
@@ -539,9 +543,9 @@ void MainWindow::sendF(QString fileName, QString p, QString type) {
         tcp->getUdpSock()->writeDatagram(mess.toUtf8(), all_user[who], port);
         //  messages[who].append(QString("<div style=\" text-align:right\"><img filename= \"%1\" src=\"a.png\" width=\"034\" height=\"028\" alt=\"404\"  /><div/>").arg(fileName));
         // buttons[who]->click();
-        ui->perbars->addWidget(pers);
+        persentBarLayout->addWidget(pers);
         auto la = new QLabel(fileName + "\nto " + all_user[who].toString());
-        ui->perbars->addWidget(la);
+        persentBarLayout->addWidget(la);
     }
 
 

@@ -107,6 +107,7 @@ private:
     qint32 port;
     QString file_path_tmp;
     QVBoxLayout *frindBoxLayout;
+    QVBoxLayout *persentBarLayout;
 
     void sendF(QString filename, QString path = "", QString type = "FD");
 

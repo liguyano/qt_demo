@@ -5,11 +5,44 @@
 about the feature of this file.  
 This project is build for the local net text and **binary** *file* transport.
 
+## about version 2.2
+
+update in 2024年1月19日17点37分
+
+use the broadcast function to find the other host.
+
+but it can only run in
+
+```c++ 
+for (auto ip: all_ip) {
+        auto ips = ip.toString();
+        auto all = ips.split('.');
+        for (int i = 0; i < 255; ++i) {
+                needIp=ipAddr.arg(all[0]).arg(all[1]).arg(i).arg(255);
+                QHostAddress tmp(needIp);tcp->getUdpSock()->writeDatagram("hello", tmp, this->port);
+        }
+    }
+```
+
+but can't be in
+
+```c++
+for (auto ip: all_ip) {
+        auto ips = ip.toString();
+        auto all = ips.split('.');
+        
+                needIp=ipAddr.arg(all[0]).arg(all[1]).arg(255).arg(255);
+                QHostAddress tmp(needIp);tcp->getUdpSock()->writeDatagram("hello", tmp, this->port);
+        
+    }
+```
+
 ## about this version 1.0
 
 this version is already implement the text send and ***file convert***. But the
 *last part* of the scent file can't be received. Reason unknown.  
 This project is powered by QT.
+
 > System.out.println("hello world");
 
 ## about this version 2.0

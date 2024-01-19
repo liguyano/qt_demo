@@ -320,16 +320,41 @@
        <zorder>frindsArea</zorder>
        <zorder>frame_3</zorder>
    </widget>
-      <widget class="QWidget" name="verticalLayoutWidget_2">
+      <widget class="QScrollArea" name="filePersents">
           <property name="geometry">
               <rect>
-                  <x>760</x>
-                  <y>40</y>
-                  <width>211</width>
-                  <height>461</height>
+                  <x>750</x>
+                  <y>10</y>
+                  <width>221</width>
+                  <height>521</height>
               </rect>
           </property>
-          <layout class="QVBoxLayout" name="perbars"/>
+          <property name="widgetResizable">
+              <bool>true</bool>
+          </property>
+          <widget class="QWidget" name="scrollAreaWidgetContents_2">
+              <property name="geometry">
+                  <rect>
+                      <x>0</x>
+                      <y>0</y>
+                      <width>219</width>
+                      <height>519</height>
+                  </rect>
+              </property>
+              <widget class="QScrollBar" name="verticalScrollBar_2">
+                  <property name="geometry">
+                      <rect>
+                          <x>180</x>
+                          <y>10</y>
+                          <width>16</width>
+                          <height>511</height>
+                      </rect>
+                  </property>
+                  <property name="orientation">
+                      <enum>Qt::Vertical</enum>
+                  </property>
+              </widget>
+          </widget>
       </widget>
   </widget>
      <widget class="QMenuBar" name="menubar">

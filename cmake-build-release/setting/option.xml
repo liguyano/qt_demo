@@ -6,13 +6,12 @@
         <ipAddres>
             <v4>192.168.46.1</v4>
             <v4>192.168.144.1</v4>
-            <v4>192.168.1.100</v4>
             <v4>172.25.112.1</v4>
         </ipAddres>
         <port>7001</port>
         <fileOpenDir>./file_recv/</fileOpenDir>
         <fileSavePath>D:/OneDrive - jxstnu.edu.cn/c++/demo/qt_Demo/cmake-build-release/file_recv/</fileSavePath>
-        <iconPath>D:/OneDrive - jxstnu.edu.cn/图片/ai/MeDyVzx5mSRZOoDi1W3I--1--ftv9d.jpg</iconPath>
+        <iconPath>D:/OneDrive - jxstnu.edu.cn/图片/ai/i10p8r3rAfktCcnyzCct--1--bcjj8.jpg</iconPath>
     </user>
     <friends>
         <friend>

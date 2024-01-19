@@ -733,9 +733,4 @@ void MainWindow::load_selceIcon() {
     setting set;
     set.selectIcon();
     loadIcon();
-
 }
-
-
-
-
